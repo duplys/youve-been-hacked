@@ -1,0 +1,18 @@
+# Anpassungen fuer Beta-Version
+
+body {
+    background-color: white;
+}
+
+.beta {
+	# background-image: url("/app/beta/beta.png");
+    background-color: yellow;
+}
+
+.big {
+    font-size:150%;
+}
+
+.bigger {
+    font-size:250%;
+}

@@ -1,0 +1,18 @@
+<?php
+
+/*
+     Konfigurationsdatei f&uuml;r Hacking-Demo
+     
+ */
+  
+// MySQL-Parameter   
+define ("USERNAME","DEMO");
+define ("PASSWORD","DEMO");
+define ("HOSTNAME","localhost");
+define ("DATENBANK","DEMO");
+
+define ("DEFAULTSPRACHE","de");
+      
+define ("AVATARPFAD","/var/www/demo/avatare/");
+
+?>

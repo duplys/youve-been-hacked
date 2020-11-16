@@ -1,0 +1,4 @@
+AuthType Basic
+AuthName "Admin-Bereich"
+AuthUserFile /var/www/app/admin/.htpasswd
+require valid-user

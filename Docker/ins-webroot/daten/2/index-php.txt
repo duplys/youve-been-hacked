@@ -1,0 +1,105 @@
+Cookies:
+--------
+PHPSESSID
+
+
+Dateien:
+--------
+style.css
+
+
+Verzeichnisse & Pfade:
+----------------------
+admin/index.php?sprache=de      Administrationsbereich
+backend/index.php?sprache=de    Backend
+
+kontakt.php?datei=mail.txt      Kontaktformular
+kontakt-html5.php               Kontaktformular mit E-Mail-Pruefung
+empfehle.php                    Empfehlungsfunktion
+
+angriffe/index.html             Angriffe (bleiben aussen vor)
+
+
+URL-Parameter in index.php:
+---------------------------
+Sprachauswahl:
+   sprache=de  
+   sprache=en
+Eintrag auswaehlen:
+  aktion=anzeigen&id=1&sprache=de
+  aktion=anzeigen&id=2&sprache=de
+  aktion=anzeigen&id=3&sprache=de
+
+  
+Formulare:
+----------
+Suche:
+<form action="index.php" method="GET"> 
+   <input type="hidden" name="sprache" value="de">
+   <input type="text" name="nach" value="Suchbegriff" size="20" maxlength="250">
+   <input name="aktion" value="suchen" type="submit">
+</form>
+
+Einloggen:
+<form action="index.php" method="POST">  
+    <input type="hidden" name="sprache" value="de"><br> 
+    Benutzername:<br>  
+    <input type="text" name="benutzer" value="gast" size="50" maxlength="100"><br> 
+    Passwort:<br> 
+    <input type="text" name="passwort" value="gast" size="50" maxlength="100"><br> 
+    <input type="submit" name="aktion" value="einloggen"> 
+</form> 
+
+Registrieren:
+<form action="index.php" method="POST"> 
+    <input type="hidden" name="sprache" value="de">     
+    Realname:<br> 
+    <input type="text" name="real" value="Realname" size="50" maxlength="100"><br>
+    Benutzername:<br> 
+    <input type="text" name="benutzer" value="Benutzername" size="50" maxlength="100"><br>
+    Passwort:<br>
+    <input type="text" name="passwort" value="Passwort" size="50" maxlength="100"><br>
+    <input type="submit" name="aktion" value="registrieren">
+</form>
+
+
+Sonstiges:
+----------
+Kommentar in ID in den Eintraegen: <!-- ID: 1 -->
+
+
+Parameter        Bekannte Werte
+-------------------------------
+aktion           anzeigen (mit id & sprache)
+aktion           ausloggen (mit sprache)
+aktion           einloggen (mit benutzer & passwort & sprache) 
+aktion           registrieren (mit real & benutzer & passwort & sprache)
+aktion           suchen (mit nach & sprache)
+benutzer         String, maxlength=100 (mit aktion=einloggen | registrieren)
+id               Zahl, 1 - 3 (mit aktion=anzeigen)
+nach             String, maxlength=250 (mit aktion=suchen)
+passwort         String, maxlength=100 (mit aktion=einloggen | registrieren)
+real             String, maxlength=100 (mit aktion=registrieren)
+sprache          de
+sprache          en
+
+
+Aktionen und Besonderheiten
+---------------------------
+suchen           Wert von nach erscheint auf Seite
+anzeigen         Falsche ID: Keine Ausgaben in Sourcecode und Webseite
+anzeigen         ID=Buchstabe: SQL-Fehlermeldung: 
+                 1054: Unknown column 'a' in 'where clause'
+anzeigen         ID=': SQL-Fehlermeldung
+                 1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''' at line 1
+einloggen        Aussagen widersprechen sich (Erst: Nicht eingeloggt, Dann: Eingeloggt)
+einloggen        Evtl. wird der Benutzername in Ausgabe uebernommen
+ausloggen        Kein Schutz vor CSRF?                 
+einloggen        Gleiche Fehlermeldung bei "Name richtig / Passwort falsch" und "Name falsch / Passwort egal"
+registrieren     bei vorhandenem Benutzernamen SQL-Fehlermeldung
+                 1062: Duplicate entry 'EINGABE' for key 'Benutzer_Name' 
+
+SQL-Datenbank
+-------------
+Tabelle         'Benutzer_Name'
+

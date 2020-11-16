@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+
+<title>You&#8217;ve been hacked! - Kapitel 3</title>
+
+</head>
+
+<body>
+
+<h1>Kapitel 3 - Zustandsbasierte Angriffe</h1>
+
+<h2>3.5 Clickjacking</h2>
+
+<p>
+Diese
+<a href="3/clickjacking/demo.html">Clickjacking-Demo</a>
+ist extrem vereinfacht. Denn beide Fenster liegen einfach so 
+&uuml;bereinander, dass sichtbares und unsichtbares "Klick-Ziel" sich an 
+der gleichen Stelle befinden.
+</p>
+
+<p>
+Das reicht, um das Prinzip zu verdeutlichen: Wenn Sie den sichtbaren Link
+anklicken, erreicht der Klick tats&auml;chlich den Button im Formular der
+unsichtbaren Seite.
+</p>
+
+<p>
+Dass so was nicht gut ist, d&uuml;rfte einleuchten. 
+</p>
+
+<h2>3.7 - Die Demo-Anwendung
+
+<h3>3.7.6 - CSRF</h3>
+
+<p>
+Die ausf&uuml;hrbaren Angriffe auf den beiden verlinkten Seiten sind
+eigentlich keine CSRF-Angriffe: Sie funktionieren nur, wenn diese Seite von
+dem Server geladen wurde, auf dem auch die Demo-Anwendung l&auml;uft. Da
+gibt es keinen "Cross-Site"-Faktor. Da ich die IP-Adresse Ihres Servers
+nicht kenne kann ich den Angriff aber nicht weiter vorbereiten.
+</p>
+
+<p>
+Im jeweils dargestellten Sourcecode ist die Stelle markiert, an der Sie den
+Angriff anpassen m&uuml;ssen.
+</p>
+
+<ul>
+    <li> <a href="3/csrf-img-tag.html">Der CSRF-Angriff mit IMG-Tag</a>
+    <li> <a href="3/csrf-formular.html">Der CSRF-Angriff mit Formular</a><br>
+    Nach dem Aufruf der Seite wird das darauf befindliche Formuar 
+    automatisch &uuml;ber JavaScript abgeschickt. Danach landen Sie in diesem 
+    Fall sofort im Admin-Bereich. Das verr&auml;t den Angriff, ist hier 
+    aber praktisch, da Sie so gleich das Ergebnis des Angriffs sehen.
+    <br>
+    Ein Angreifer w&uuml;rde das nat&uuml;rlich nicht so auff&auml;llig 
+    machen und das Formular z.B. in einem unsichtbaren iframe laden.
+</ul>
+
+<p>
+Das Formular sieht so aus:
+</p>
+
+<pre><code>&lt;form method="post" action="http://<b>Adresse des Servers</b>/app/admin/index.php"&gt;
+   &lt;input type="hidden" name="bname" value="FORMULAR-CSRF"&gt;
+   &lt;input type="hidden" name="rname" value="Realname"&gt;
+   &lt;input type="hidden" name="pass" value="FORMULAR-CSRF"&gt;
+   &lt;input type="hidden" name="aktion" value="eintragen"&gt;
+&lt;/form&gt;
+
+&lt;script&gt;document.forms[0].submit()&lt;/script&gt;</code></pre>
+
+<p>
+Es besteht nur aus unsichtbaren Feldern f&uuml;r die n&ouml;tigen
+Parameter.  Die Zeile JavaScript-Code im script-Tag darunter schickt das
+Formular beim Laden der Seite ab.
+</p>
+
+
+
+<h2>Die Links</h2>
+
+<ul>
+    <li> [Ahar_08] <a href="https://blog.guya.net/2008/10/07/malicious-camera-spying-using-clickjacking/">Guy Aharonovsky: &#8222;Malicious camera spying using ClickJacking&#8220;</a>
+    <li> [Eile_10] <a href="http://www.ceilers-news.de/serendipity/16-Clickjacking-The-next-Generation.html">Carsten Eilers: &#8222;Clickjacking - The next Generation&#8220;</a>
+    <li> [HaGo_08] <a href="http://www.sectheory.com/clickjacking.htm">Robert Hansen, Jeremiah Grossman: &#8222;Clickjacking&#8220;</a>
+    <li> [Ston_10a] <a href="https://www.blackhat.com/html/bh-eu-10/bh-eu-10-archives.html#Stone">Paul Stone; Black Hat Europe 2010: &#8222;Next Generation Clickjacking&#8220;</a>
+    <li> [Ston_10b] <a href="https://www.contextis.com/services/research/white-papers/clickjacking-black-hat-2010/">Paul Stone; Context Information Security: &#8222;Clickjacking - Black Hat 2010&#8220;</a>
+</ul>
+ 
+<hr>
+
+<p>
+<a href="../hacking-index.html">Zur&uuml;ck</a>
+</p>
+
+</body>
+
+</html>
+

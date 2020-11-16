@@ -1,0 +1,230 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+
+<title>You&#8217;ve been hacked! - Der MySpace-Wurm Samy</title>
+
+</head>
+
+<body>
+
+<h1>You&#8217;ve been hacked! - Der MySpace-Wurm Samy</h1>
+
+<p>
+Der erste, oder zumindest der erste allgemein bekannt gewordene, Web-Wurm 
+war der MySpace-Wurm Samy, der sich am 4. Oktober 2005 auf MySpace 
+ausbreitete. 
+</p>
+
+<h2>So funktionierte der MySpace-Wurm</h2>
+
+<p>
+<a href="http://www.samy.pl/">Samy Kamkar</a>
+war der Meinung, zu wenig Freunde auf MySpace zu haben.
+<a href="https://samy.pl/myspace/tech.html">Samy</a>
+(der Wurm) sollte das
+<a href="https://samy.pl/myspace/">&auml;ndern</a>.
+Und tat das sehr erfolgreich.  Ausgehend von Samy Kamkars Profilseite
+verbreitete sich der Wurm &uuml;ber eine persistente XSS-Schwachstelle in
+die Profilseiten der Besucher eines befallenen Profils.  &Uuml;ber einen
+XMLHttpRequest wurde Samy zum Freund und 'Hero' des Besuchers gemacht und
+der Wurmcode in dessen Profilseite integriert.  Innerhalb von 20 Stunden
+hatte Samy Kamkar mehr als 1 Million Freunde und Samy (der Wurm)
+entsprechend viele Profile verseucht.  MySpace musste den Betrieb
+vor&uuml;bergehend komplett einstellen, um den Wurm zu stoppen und alle
+befallenen Seiten zu reinigen.
+</p>
+
+<p>
+Die folgende Beschreibung des MySpace-Wurms basiert auf Samy Kamkars
+eigener 
+<a href="https://samy.pl/myspace/tech.html">Beschreibung</a>.
+Die Methoden, um MySpaces Filter zu umgehen, sehen inzwischen recht
+altmodisch aus.  Der Wurm ist ja auch schon fast 10 Jahre alt.
+</p>
+
+<p>
+Bei der Entwicklung musste Samy Kamkar einige Schutzma&szlig;nahmen von
+MySpace und weitere Einschr&auml;nkungen &uuml;berwinden. Was ihm
+erfolgreich gelang, wie der Erfolg des Wurms eindrucksvoll bewies.
+</p>
+
+<p>
+Den Sourcecode des Wurm finden Sie sowohl in der Originalformatierung als 
+auch in einer angepassten, lesbareren Formatierung sowie in einer 
+kommentierten Version mit "sprechenden" Variablennamen
+<a href="samy-code.html">hier</a>.
+In der Beschreibung ist das Wort "Code" teilweise mit den 
+entsprechenden Quellen im Sourcecode verlinkt.
+</p>
+
+
+<ol>
+    <li> MySpace blockierte die meisten HTML-Tags, insbesondere
+    <code>&lt;script&gt;</code>-Tags, HREF-Tags mit JavaScript etc.. Nicht
+    gefiltert wurden jedoch CSS-Tags. Samy nutzte aus, das einige Browser wie
+    zum Beispiel der Internet Explorer und einige Safari-Versionen
+    JavaScript-Code in CSS-Tags auswerteten. Dadurch funktionierte der
+    Wurm-Code nicht in jedem Browser, aber es blieben genug potentielle Opfer
+    &uuml;brig.<br>
+    Code: <code>&lt;div style="background:url('javascript:alert(1)')"&gt;</code>
+    <br>
+    <br>
+
+    <li> MySpace filterte die Zeichenkette 
+    <code>&quot;javascript&quot;</code> &uuml;berall aus - nicht aber 
+    <code>&quot;java\nscript&quot;</code>, was von einigen Browsern als 
+    <code>&quot;javascript&quot;</code> interpretiert wird 
+    (<code>\n</code> ist der Zeilenumbruch, Newline). <br>
+    <a href="samy-code.html#cssnl">Code</a>:
+    <code>&lt;div style="background:url('java<br>
+    script:alert(1)')"&gt;</code>
+    <br>
+    <br>
+
+    <li> Innerhalb des <code>&lt;div&gt;</code>-Tags konnten keine
+    Quote-Zeichen verwendet werden, da sowohl <code>'</code> als auch
+    <code>&quot;</code> bereits verwendet wurden. Nun ist es ziemlich
+    schwierig, JavaScript ohne Quote-Zeichen zu programmieren. Als Ausweg hat
+    Samy Kamkar den JavaScript-Code in einem Ausdruck gespeichert und dann mit
+    dessen Namen aufgerufen und ausgef&uuml;hrt. Dadurch konnte das einfache
+    Quote-Zeichen (<code>'</code>) verwendet werden. <br>
+    Code: <code>&lt;div id="mycode" expr="alert('Hallo!')" style="background:url('java<br>
+    script:eval(document.all.mycode.expr)')"&gt;</code><br>
+    Die relevanten Teile sind im
+    <a href="samy-code.html">unformatierten Sourcecode</a>
+    blau markiert.
+    <br>
+    <br>
+    
+    <li> Au&szlig;er einfacher Quote-Zeichen (<code>'</code>) wurden auch 
+    doppelte Quote-Zeichen (<code>&quot;</code>) ben&ouml;tigt. Das escapen 
+    (zum Beispiel <code>foo\&quot;bar</code>) funktionierte nicht, da 
+    MySpace alle maskierten Quote-Zeichen ausfilterte. Als Ausweg hat Samy 
+    Kamkar die doppelten Quote-Zeichen mit der Funktion 
+    <code>String.fromCharCode()</code> aus ihrem Dezimalcode erzeugt. <br>
+    <a href="samy-code.html#stringfromchar">Code</a>:
+    <code>&lt;div id="mycode" expr="alert('Doppeltes Quote-Zeichen: ' + String.fromCharCode(34))" style="background:url('java<br>
+    script:eval(document.all.mycode.expr)')"&gt;</code>
+    <br>
+    <br>
+    
+    <li> Um den Wurm-Code auf die Profilseite des Opfers zu kopieren 
+    musste auf den Quelltext der Seite zugegriffen werden, um daraus die 
+    ID des Benutzers zu lesen. Eigentlich ginge dies &uuml;ber 
+    <code>document.body.innerHTML</code> - wenn MySpace nicht die 
+    Zeichenkette <code>&quot;innerHTML&quot;</code> &uuml;berall ausgefiltert 
+    h&auml;tte. Als Ausweg wurde <code>&quot;innerHTML&quot;</code> in einem 
+    <code>eval()</code>-Aufruf aus zwei Strings zusammengesetzt: <br>
+    <a href="samy-code.html#innerHTML">Code</a>:
+    <code>alert(eval('document.body.inne' + 'rHTML'));</code>
+    <br>
+    <br>
+    
+    <li> Bei der Suche nach der ID des Benutzers,
+    <code>&quot;friendID&quot;</code> w&uuml;rde auch der eigene Code gefunden
+    werden, da der diese Zeichenkette ja auch enth&auml;lt. Daher muss das zu
+    suchende Wort ebenfalls zusammengesetzt werden. Der gleiche Fall tritt auf,
+    wenn der Wurm-Code f&uuml;r die Weiterverbreitung von der aktuellen Seite
+    gelesen wird. <br>
+    <a href="samy-code.html#ycode">Code</a>: 
+    <code>var index = html.indexOf('m' + 'ycode');</code>
+    <br>
+    <br>
+    
+    <li> Um die Profilseite des Opfers zu &auml;ndern, wurden XMLHttpRequests
+    verwendet. Das ginge zwar auch ohne, zum Beispiel &uuml;ber versteckte iFrames,
+    aber der im Hintergrund ablaufende XMLHttpRequest ist deutlich
+    unauff&auml;lliger, au&szlig;erdem werden die f&uuml;r den Angriff ben&ouml;tigten Cookies
+    automatisch mitgeliefert. Das f&uuml;r die Durchf&uuml;hrung der XMLHttpRequests
+    notwendige <code>&quot;onreadystatechange&quot;</code> wurde von MySpace
+    ausgefiltert und daher ebenfalls in einem <code>eval()</code>-Aufruf
+    zusammengesetzt. <br>
+    <a href="samy-code.html#onreadystatechange">Code</a>:
+    <code>eval('xmlhttp.onread' + 'ystatechange = callback');</code>
+    <br>
+    <br>
+    
+    <li> Um Samy zur Liste der 'Heroes' des Opfers hinzuzuf&uuml;gen, musste
+    ein POST-XMLHttpRequest an die addFriends-Seite unter
+    <code>www.myspace.com</code> geschickt werden. Die aktuelle Seite befand
+    sich jedoch unter <code>profile.myspace.com</code>, so dass der Request
+    gegen die Same-Origin Policy verst&ouml;&szlig;t. Um diese
+    Einschr&auml;nkung zu umgehen, nutzte Samy Kamkar aus, das die Profile
+    sowohl unter <code>profile.myspace.com</code> als auch unter
+    <code>www.myspace.com</code> erreichbar waren. Die Seite musste also nur
+    unter der gew&uuml;nschten Domain neu geladen werden.<br>
+    <a href="samy-code.html#location">Code</a>:
+    <code>if (location.hostname == 'profile.myspace.com') document.location = 'http://www.myspace.com' + location.pathname + location.search; </code>
+    <br>
+    <br>
+    
+    <li> Um Samy Kamkar zur Freundesliste des Opfers hinzuzuf&uuml;gen, fehlte
+    nun nur noch ein entsprechender POST-XMLHttpRequest. Um CSRF-Angriffe zu
+    verhindern, verwendete MySpace in seinen Formularen einen zuf&auml;lligen
+    Hash-Wert als Sicherheitstoken, der mit dem zugeh&ouml;rigen POST-Request
+    abgesendet werden musste. Um diesen Hash-Wert zu erhalten, wurde vor dem
+    Absenden des XMLHttpRequests eine Seite mit dem Hash-Wert &uuml;ber einen
+    GET-Request geladen und daraus der Hash-Wert
+    <a href="samy-code.html#hash">&uuml;bernommen</a>. 
+    Denn so ein Token sch&uuml;tzt bekanntlich nur vor CSRF-Angriffen, wenn es 
+    nicht ausgesp&auml;ht werden kann. Weshalb die gesch&uuml;tzte Seite eben zum 
+    Beispiel keine XSS-Schwachstelle enthalten darf.
+    <br>
+    <br>
+    
+    <li> Um den Wurmcode in die Profilseite des Opfers einzuschleusen, musste
+    dieser erst passend codiert werden. Dazu wurde er von der aktuellen Seite
+    gelesen und manuell passend angepasst. Die JavaScript-Funktionen f&uuml;r
+    die URL-Kodierung und Escape behandelten nicht alle F&auml;lle ausreichend.
+    Weitere Probleme waren zum Beispiel die maximal m&ouml;gliche
+    Code-L&auml;nge, der teilweise Verzicht auf Leerzeichen, das Verbergen von
+    Namen und die Wiederverwendung von Funktionen.
+</ol>
+
+<p>
+Wie Sie 
+<a href="samy-code.html">sehen k&ouml;nnen</a>,
+besteht der Wurm aus ganz normalen JavaScript-Code, wenn auch teilweise in
+etwas un&uuml;blichen Schreibweisen - und an einer Stelle eingef&uuml;gt,
+an der JavaScript eigentlich nichts zu Suchen hat. 
+</p>
+
+<p>
+Das der Wurm &uuml;berhaupt funktionierte und sich auf MySpace ausbreiten
+konnte, hat zwei Gr&uuml;nde:
+</p>
+
+<ol>
+    <li> Das Hauptproblem sind die unterschiedlichen Interpretationen des HTML-
+    und JavaScript-Codes durch die verschiedenen Webbrowser: Wo der eine ein
+    kaputtes CSS-Tag erkennt und folgerichtig ignoriert, sieht der andere
+    JavaScript-Code, den er ausf&uuml;hrt.  Samy lief also nicht in allen
+    Browsern, mit dem Internet Explorer aber in einem der verbreitetsten.
+    <a href="http://blogoscoped.com/archive/2005-10-14-n81.html">Ohne</a>
+    diesen Fehler der Browser w&auml;re der Angriff fehl geschlagen.
+    <li> MySpaces Filter gegen XSS-Angriffe war zwar sehr gut, aber eben nicht
+    gut genug.  Das Problem war einfach, das einige HTML-Tags zugelassen
+    waren und andere nur auf eine Weise ausgefiltert wurden.  Was wieder einmal
+    den Nachteil von Blacklists zeigt: Was nicht drauf steht, wird
+    durchgelassen.  Wenn z.B. wie in diesem Fall <code>'innerHTML'</code>
+    verboten ist, h&auml;tte auch nach <code>'i'+'nnerHTML'</code>,
+    <code>'in'+'nerHTML'</code>, ... <code>'i'+'n'+'nerHTML'</code>, ...  usw.
+    usf.  gesucht werden m&uuml;ssen.  Und alle m&ouml;glichen anderen Kodierungen.
+</ol>
+
+</body>
+
+<hr>
+
+<p>
+Weiter
+<a href="samy-code.html">zum Wurm-Code</a>
+oder zur&uuml;ck
+<a href="../kapitel5.html">zur Kapitel-Startseite</a>
+oder
+<a href="../../hacking-index.html">zur Doku-Startseite</a>
+</p>
+
+</html>
+

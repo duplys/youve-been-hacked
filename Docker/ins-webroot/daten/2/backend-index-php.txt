@@ -1,0 +1,88 @@
+Cookies:
+--------
+PHPSESSID       (aus Startseite)
+
+
+Dateien:
+--------
+style.css       (aus Startseite)
+
+
+Verzeichnisse & Pfade:
+----------------------
+## Bekannt, auf Aenderungen bei Aufruf aus Backend pruefen:
+../admin/index.php?sprache=de      Administrationsbereich
+../index.php?sprache=de            Startseite
+../kontakt.php                     Kontaktformular
+../kontakt-html5.php               Kontaktformular mit E-Mail-Pruefung
+../empfehle.php                    Empfehlungsfunktion
+
+## neu:
+index.php?plugin=plugin&sprache=de   eingebundenes PlugIn
+index.php?aktion=plugin2&sprache=de  weitergeleiteten Plugin
+
+ 
+Formulare:
+----------
+Einloggen:
+<form action="index.php" method="POST"> 
+   <input type="hidden" name="sprache" value="de"> 
+   Benutzername:<br> 
+   <input type="text" name="benutzer" value="autor" size="20" maxlength="50"> <br> 
+   Passwort: <br> 
+   <input type="text" name="passwort" value="autor" size="20" maxlength="50"> <br>
+   <input type="submit" name="aktion" value="einloggen"> 
+</form> 
+   
+Avatar hochladen:
+<form action="index.php" method="post" enctype="multipart/form-data"> 
+   <input type="hidden" name="MAX_FILE_SIZE" value="128000"> 
+   <input type="file" name="avatarupload"> 
+   <input type="submit" name="aktion" value="upload"> 
+</form>
+
+Neuen Eintrag eingeben:
+<form action="index.php" method="POST"> 
+   <input type="hidden" name="sprache" value="de"> 
+   <input type="text" name="titel" value="Der Titel" size="80" maxlength="250"> 
+   <br><br>  
+   <textarea rows="10" cols="80" name="text">Der Text</textarea> 
+   <br><br> 
+   <input type="submit" name="aktion" value="eintragen"> 
+</form> 
+
+
+Sonstiges:
+----------
+Kommentar in ID in den Eintraegen: <!-- ID: 1 -->
+
+
+
+Parameter        Bekannte Werte
+-------------------------------
+plugin           plugin (mit sprache)
+aktion           plugin2 (mit sprache)
+aktion           einloggen (mit benutzer & passwort & sprache)
+aktion           ausloggen (mit sprache)
+aktion           upload (mit file & MAX_FILE_SIZE)
+aktion           anzeigen (mit id & sprache)
+aktion           eintragen (mit titel & text & sprache)
+benutzer         String, maxlength=50 (mit aktion=einloggen) 
+passwort         String, maxlength="500 (mit aktion=einloggen) 
+MAX_FILE_SIZE    Konstante 128000 (mit aktion=upload)
+avatarupload     File (mit aktion=upload)
+id               Zahl, 1 - 3 (mit aktion=anzeigen)
+titel            String,maxlength=250 (mit aktion=eintragen) 
+text             textarea, rows=10, cols=80 (mit aktion=eintragen) 
+sprache          de
+sprache          en
+
+
+Aktionen und Besonderheiten
+---------------------------
+einloggen        Benutzername wird in Ausgabe uebernommen
+ausloggen        Kein Schutz vor CSRF?                 
+upload           Wirklich nur GIF und JPEG erlaubt?
+anzeigen         Was passiert bei Manipulation der ID (siehe Startseite)
+
+
