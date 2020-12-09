@@ -1,5 +1,8 @@
-# Introduction
-This repository contains code and write-ups for carrying out the experiments described in Carsten Eiler's book "You've Been Hacked" on security vulnerabilities in web applications.
+# Synopsys
+This repository contains Dockerfiles, setup instructions, some code and write-ups for carrying out the experiments described in Carsten Eiler's book "You've Been Hacked" on security vulnerabilities in web applications. It also contains slides summarizing each chapter that can be used for teaching.
+
+# Creating the Docker Containers
+tbd
 
 # Starting the Containers
 First, we need to create a new Docker network:
@@ -29,6 +32,8 @@ $
 ```
 
 If all went well, you should see the two containers there.
+
+# Setting up ZAProxy
 
 Next, go your web browser and visit `http://127.0.0.1:8080/zap/` (as [described here](https://www.zaproxy.org/docs/docker/webswing/))
 
@@ -66,13 +71,13 @@ Now, in your Firefox browser you need to enter the following URL: `http://host.d
 
 
 # References
-[1] https://security.secure.force.com/security/tools/webapp/zapbrowsersetup
-[2] https://security.secure.force.com/security/tools/webapp/zapclientsetup
-[3] https://docs.docker.com/docker-for-mac/networking/
-[4] https://stackoverflow.com/questions/24319662/from-inside-of-a-docker-container-how-do-i-connect-to-the-localhost-of-the-mach
-[5] https://www.zaproxy.org/docs/desktop/ui/dialogs/options/dynsslcert/#install
-[6] https://www.zaproxy.org/docs/desktop/ui/dialogs/options/dynsslcert/
-[7] https://www.zaproxy.org/docs/docker/webswing/
-[8] https://www.zaproxy.org/docs/docker/about/
-[9] https://medium.com/volosoft/running-penetration-tests-for-your-website-as-a-simple-developer-with-owasp-zap-493d6a7e182b
-[10] https://www.rheinwerk-verlag.de/youve-been-hacked-alles-ueber-exploits-gegen-webanwendungen/
+* https://security.secure.force.com/security/tools/webapp/zapbrowsersetup
+* https://security.secure.force.com/security/tools/webapp/zapclientsetup
+* https://docs.docker.com/docker-for-mac/networking/
+* https://stackoverflow.com/questions/24319662/from-inside-of-a-docker-container-how-do-i-connect-to-the-localhost-of-the-mach
+* https://www.zaproxy.org/docs/desktop/ui/dialogs/options/dynsslcert/#install
+* https://www.zaproxy.org/docs/desktop/ui/dialogs/options/dynsslcert/
+* https://www.zaproxy.org/docs/docker/webswing/
+* https://www.zaproxy.org/docs/docker/about/
+* https://medium.com/volosoft/running-penetration-tests-for-your-website-as-a-simple-developer-with-owasp-zap-493d6a7e182b
+* https://www.rheinwerk-verlag.de/youve-been-hacked-alles-ueber-exploits-gegen-webanwendungen/
