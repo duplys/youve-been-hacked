@@ -1,10 +1,13 @@
-# Synopsys
+# An Interactive Web Security Lab
+An interactive web security lab based on Carsten Eiler's book "You've Been Hacked", Rheinwerk Computing, 1st edition (ISBN 978-3-8362-4460-2)
+
+## Synopsys
 This repository contains Dockerfiles, setup instructions, some code and write-ups for carrying out the experiments described in Carsten Eiler's book "You've Been Hacked" on security vulnerabilities in web applications. It also contains slides summarizing each chapter that can be used for teaching.
 
-# Creating the Docker Containers
+## Creating the Docker Containers
 tbd
 
-# Starting the Containers
+## Starting the Containers
 First, we need to create a new Docker network:
 ```shell
 $ docker network create -d bridge hack-network
@@ -33,7 +36,7 @@ $
 
 If all went well, you should see the two containers there.
 
-# Setting up ZAProxy
+## Setting up ZAProxy
 
 Next, go your web browser and visit `http://127.0.0.1:8080/zap/` (as [described here](https://www.zaproxy.org/docs/docker/webswing/))
 
@@ -70,7 +73,7 @@ You'll need to import the dynamic SSL certificate into Firefox. (go to ZAP --> O
 Now, in your Firefox browser you need to enter the following URL: `http://host.docker.internal:8888/daten/kapitel1.html`. The reason for this is that if you use `127.0.0.1` together with the ZAP proxy, once that HTTP request arrives at the proxy, the proxy running in a docker container tries to resolve it and hits itself. So you get a "connection refused" warning and a Bad Gateway HTML response.
 
 
-# References
+## References
 * https://security.secure.force.com/security/tools/webapp/zapbrowsersetup
 * https://security.secure.force.com/security/tools/webapp/zapclientsetup
 * https://docs.docker.com/docker-for-mac/networking/
