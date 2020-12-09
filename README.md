@@ -1,4 +1,4 @@
-# An Interactive Web Security Lab
+# You've Been Hacked &mdash; An Interactive Web Security Lab
 An interactive web security lab based on Carsten Eiler's book "You've Been Hacked", Rheinwerk Computing, 1st edition (ISBN 978-3-8362-4460-2)
 
 ## Synopsys
