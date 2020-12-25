@@ -1,10 +1,10 @@
-# You've Been Hacked &mdash; An Interactive Web Security Lab
-An interactive web security lab based on Carsten Eiler's book "You've Been Hacked", Rheinwerk Computing, 1st edition (ISBN 978-3-8362-4460-2)
+# You've Been Hacked &mdash; An Interactive Course on Web Security
+An interactive web security course based on Carsten Eiler's book "You've Been Hacked", Rheinwerk Computing, 1st edition (ISBN 978-3-8362-4460-2).
 
 ## Synopsys
 This repository contains Dockerfiles, setup instructions, some code and write-ups for carrying out the experiments described in Carsten Eiler's book "You've Been Hacked" on security vulnerabilities in web applications. It also contains slides summarizing each chapter that can be used for teaching.
 
-## Creating the Docker Containers
+## Creating Docker Containers
 tbd
 
 ## Starting the Containers
