@@ -1,7 +1,7 @@
 \documentclass[aspectratio=169]{beamer}
 %\usetheme{Boadilla}
-%\usetheme{default}
-\usecolortheme{owl}
+\usetheme{default}
+%\usecolortheme{owl}
 \usepackage{color}
 
 \usepackage{hyperref}
@@ -123,10 +123,96 @@
 \end{frame}
 
 \begin{frame}
-    \frametitle{General Approach}
-    To test a web application for security vulnerabilities, you must first get to know it. You must understand what functions are used and what parameters are used by these functions. You have to test every parameter whether it can be exploited (e.g., using illegitimate values). You also need to check whether the web application code contains known vulnerabilities.
+    \frametitle{Kill Chain}
+    The term \href{https://en.wikipedia.org/wiki/Kill_chain}{kill chain} was originally coined by the military to describe the structure of an attack: finding adversary targets suitable for engagement; fixing their location; tracking and observing; targeting with a suitable weapon or asset to create desired effects; engaging the adversary; assessing the effects;
+    \vfill
+    In 2011, Hutchins et al~\cite{hutchins2011intelligence} from Lockheed-Martin expanded this concept to an \textbf{intrusion kill chain} for (network) security. They defined intrusion kill chain as reconnaissance, weaponization, delivery, exploitation, installation, command and control (C2), and actions on objectives. 
+    \vfill
+    Later on, security organizations have adopted this concept under the name "cyber kill chain".
+\end{frame}
+
+\begin{frame}
+    \frametitle{Intrusion Kill Chain}
+    \begin{figure}
+        \includegraphics[scale=.35]{img/intrusion-kill-chain.png}
+    \end{figure}
+    \vfill
+    Source: \href{https://commons.wikimedia.org/wiki/File:Intrusion_Kill_Chain_-_v2.png}{Wikimedia Commons}.
+\end{frame}
+
+\begin{frame}
+    \frametitle{Mimicking the Attacker}
+    Every attack starts by collecting information about the target, e.g., a web application ($\rightarrow$ cyber kill chain).
+    \vfill
+    Likewise, to test a web application for security vulnerabilities, you must first get to know it. You must understand what functions it uses and what parameters these functions have. You have to test every parameter whether it can be exploited (e.g., using illegitimate values). You need to check whether the web application code contains known vulnerabilities.
+    \vfill
+    \textbf{Systematic collection and documentation} allows you to understand what a real attacker would learn and where she could break your application's security.
+\end{frame}
+
+\begin{frame}
+    \frametitle{Collecting Rudimentary Information}
+    Document any \textbf{easy-to-spot hints} to security vulnerabilities:
+    \begin{itemize}
+        \item Suspicious comments in the HTML code (\texttt{<!-- default password:...})
+        \item Sensitive information embedded in the HTML code
+        \item Error messages from the web application
+        \item Error messages from the webserver and http responses
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Learning the Web Application Structure}
+    Catalogue \textbf{all pages, resources and parameters} that belong to or are used by the web application:
+    \begin{itemize}
+        \item using a general-purpose tool like \href{https://www.gnu.org/software/wget/}{\texttt{wget}}
+        \item using a special-purpose tool like the \href{https://www.zaproxy.org/}{OWASP Zed Attack Proxy (ZAP)} crawler
+        \item by manually visiting all web pages of the application (works well for small web applications)
+    \end{itemize}
+    \vfill
+    While \texttt{GET} parameters are displayed in the URL, you'll need a web proxy like OWASP ZAP to access \texttt{POST} parameters and cookies.
+    \vfill
+    If your web application has different roles (guest, admin, \ldots), you'll have to test it for all these roles (i.e., first as a guest, then logged in as admin, etc.)
+\end{frame}
+
+\begin{frame}
+    \frametitle{Investigating Individual Web Pages}
+    Visit all pages and \textbf{inspect their source code}. Look for things like:
+    \begin{itemize}
+        \item \textbf{Leaky HTML comments} (comments containing e.g., code fragements, configuration parameters, server names, SQL table descriptions, etc.)
+        \item \textbf{Hidden input fields} (\texttt{<input type='hidden' ...>})
+        \item \textbf{SQL queries} printed in the page source due to programming or configuration errors (reveal the structure of the database and the queries used)
+        \item \textbf{IP addresses of internal servers}
+        \item \textbf{Web or email addresses}, e.g., email addresses of the developers (might reveal who wrote the application. Maybe it's just an optical tweak of a well-known application?)
+    \end{itemize} 
     
 
+\end{frame}
+
+\begin{frame}
+    \frametitle{Investigating Parameters}
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{Collecting More Information}
+   \begin{itemize}
+       \item Are there resources likes directories and files that are not linked to?
+       \item What else is running on the server? SSH?
+   \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Collecting Client-Side Information}
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{Collecting Information about Static Pages}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Collecting JavaScript-related Information}
 \end{frame}
 
 \begin{frame}
@@ -248,5 +334,28 @@
 \huge{\textcolor{white}{\textbf{0xB: Attacks on the Web Server}}}
 \end{frame}
 }
+
+
+{
+\usebackgroundtemplate{\includegraphics[width=\paperwidth]{./img/aldebaran.jpg}}
+\begin{frame}
+\huge{\textcolor{white}{\textbf{0xC: Misc}}}
+\end{frame}
+}
+
+\begin{frame}
+    \frametitle{More Things to Consider}
+    One \pause
+    Two \pause
+    Three
+\end{frame}
+
+\begin{frame}
+    \frametitle{Bibliography}
+
+\end{frame}
+
+\bibliographystyle{plain}
+\bibliography{ref/bibliography}
 
 \end{document}
