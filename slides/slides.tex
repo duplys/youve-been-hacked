@@ -1,9 +1,9 @@
 \documentclass[aspectratio=169]{beamer}
 %\usetheme{Boadilla}
-\usetheme{default}
-%\usecolortheme{owl}
+%\usetheme{default}
+\usecolortheme{owl}
 \usepackage{color}
-
+\usepackage{fontawesome}
 \usepackage{hyperref}
 \hypersetup{
     colorlinks=true,
@@ -15,17 +15,20 @@
 \urlstyle{same}
 
 
-\title{You've Been Hacked}
-\subtitle{An (Interactive) Course on Web Security}
-\author{Paul Duplys}
-\institute[]{@duplys}
-\date{\today}
+\title{\textbf{You've Been Hacked}}
+\subtitle{An (Interactive) Course on Web Security\newline\vfill}
+\author{\textbf{Paul Duplys}}
+\institute[]{\faTwitter\hspace{0.1cm} @duplys \hspace{1cm} \faGithub\hspace{0.1cm} duplys \hspace{1cm} \faLinkedinSquare\hspace{0.1cm} linkedin.com/in/paulduplys/}
+\date{}
 
 \begin{document}
 
+{
+\usebackgroundtemplate{\includegraphics[width=\paperwidth]{./img/orion-nebula.jpg}}
 \begin{frame}
     \titlepage
 \end{frame}
+}
 
 \begin{frame}
     %\frametitle{Outline}
@@ -55,7 +58,7 @@
 \end{frame}
 
 \begin{frame}
-    \frametitle{...}
+    \frametitle{\texttt{docker image ls}}
     Where are the instruction located for how to build the Docker files and use the repository?
 \end{frame}
 
@@ -123,6 +126,15 @@
 \end{frame}
 
 \begin{frame}
+    \frametitle{Why Reconnaissance?}
+    \begin{center}
+        {\fontsize{70}{80}\selectfont \faQuestionCircle}
+        \vfill
+        Hint: consider the anatomy of a typical cybersecurity attack.
+    \end{center}
+\end{frame}
+
+\begin{frame}
     \frametitle{Kill Chain}
     The term \href{https://en.wikipedia.org/wiki/Kill_chain}{kill chain} was originally coined by the military to describe the structure of an attack: finding adversary targets suitable for engagement; fixing their location; tracking and observing; targeting with a suitable weapon or asset to create desired effects; engaging the adversary; assessing the effects;
     \vfill
@@ -137,7 +149,7 @@
         \includegraphics[scale=.35]{img/intrusion-kill-chain.png}
     \end{figure}
     \vfill
-    Source: \href{https://commons.wikimedia.org/wiki/File:Intrusion_Kill_Chain_-_v2.png}{Wikimedia Commons}.
+    \small{Source: \href{https://commons.wikimedia.org/wiki/File:Intrusion_Kill_Chain_-_v2.png}{Wikimedia Commons}.}
 \end{frame}
 
 \begin{frame}
@@ -191,13 +203,22 @@
 
 \begin{frame}
     \frametitle{Investigating Parameters}
-
+    Investigate \textbf{all parameters} passed to the application:
+    \begin{itemize}
+        \item What happens when you change their values or use invalid values, e.g., a string instead of an integer?
+        \item Do invalid parameters return error message that leak information about the application like database table names?
+    \end{itemize}
 \end{frame}
 
 \begin{frame}
     \frametitle{Collecting More Information}
    \begin{itemize}
-       \item Are there resources likes directories and files that are not linked to?
+       \item Are there unlinked resources likes directories or files?
+       \item E.g., if there are links to files financial-report18.pdf and financial-report19.pdf, is there an unpublished file financial-report20.pdf?
+       \item Are there any hints to the structure of file names or subdirectories?
+       \item E.g., if the web application contains user profiles, is it possible to access an arbitrary profile using \texttt{user-[number].html} or \texttt{user.php?id=[number]}?
+       \item Are there unlinked subdirectories like \texttt{test/} or \texttt{admin/}?
+       \item Does the webserver contain unused libraries or example application code that contains hints to known vulnerabilities or the internals of the web application? 
        \item What else is running on the server? SSH?
    \end{itemize}
 \end{frame}
