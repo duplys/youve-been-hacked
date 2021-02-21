@@ -265,55 +265,96 @@
 
 \begin{frame}
     \frametitle{Collecting JavaScript-related Information}
-\end{frame}
-
-\begin{frame}
-    \frametitle{Sample frame title}
-    
-    In this slide, some important text will be
-    \alert{highlighted} because it's important.
-    Please, don't abuse it.
-    
-    \begin{block}{Remark}
-    Sample text
-    \end{block}
-    
-    \begin{alertblock}{Important theorem}
-    Sample text in red box
-    \end{alertblock}
-    
-    \begin{examples}
-    Sample text in green box. The title of the block is ``Examples".
-    \end{examples}
-
-\end{frame}
-
-\begin{frame}
-    \frametitle{Tools}
+    After checking HTML, next step is to check the JavaScript code.
+    \vfill
     \begin{itemize}
-        \item ZAProxy
-        \item ...
-    \end{itemize}
+        \item Is JavaScript used to validate input data? If so, maybe the check on the server side is ommited. 
+        \item What files and scripts are being loaded? Any known vulnerabilities?
+        \item Are there vulnerabilities in the JavaScript program logic itself? Any logic flaws that can be exploited?
+    \end{itemize}   
 \end{frame}
 
 
 \begin{frame}
-    \frametitle{Example}
-
-    \begin{itemize}
-        \item<1-> one
-        \item<2-> two
-        \item<3-> theorem
-    \end{itemize}
-
+    \frametitle{Reconnaissance of the Demo Application}
+    \begin{figure}
+        \centering
+        \includegraphics[scale=.4]{img/01-recon/recon-files-directories-paths.png}        
+    \end{figure}
 \end{frame}
 
 \begin{frame}
-    \frametitle{Example 1}
-    One \pause
-    Two \pause
-    Three
+    \frametitle{Reconnaissance of the Demo Application}
+    \begin{figure}
+        \centering
+        \includegraphics[scale=.4]{img/01-recon/recon-url-parameters.png}        
+    \end{figure}
 \end{frame}
+
+\begin{frame}
+    \frametitle{Reconnaissance of the Demo Application}
+    \begin{figure}
+        \centering
+        \includegraphics[scale=.4]{img/01-recon/recon-forms.png}        
+    \end{figure}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Reconnaissance of the Demo Application}
+    \begin{figure}
+        \centering
+        \includegraphics[scale=.4]{img/01-recon/recon-misc-and-parameters.png}        
+    \end{figure}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Reconnaissance of the Demo Application}
+    \begin{figure}
+        \centering
+        \includegraphics[scale=.4]{img/01-recon/recon-action-database.png}        
+    \end{figure}
+\end{frame}
+
+
+
+%\begin{frame}
+%    \frametitle{Sample frame title}
+%    
+%    In this slide, some important text will be
+%    \alert{highlighted} because it's important.
+%    Please, don't abuse it.
+%    
+%    \begin{block}{Remark}
+%    Sample text
+%    \end{block}
+%    
+%    \begin{alertblock}{Important theorem}
+%    Sample text in red box
+%    \end{alertblock}
+%    
+%    \begin{examples}
+%    Sample text in green box. The title of the block is ``Examples".
+%    \end{examples}
+%
+%\end{frame}
+
+%\begin{frame}
+%    \frametitle{Example}
+%
+%    \begin{itemize}
+%        \item<1-> one
+%        \item<2-> two
+%        \item<3-> theorem
+%    \end{itemize}
+%
+%\end{frame}
+
+%\begin{frame}
+%    \frametitle{Example 1}
+%    One \pause
+%    Two \pause
+%    Three
+%\end{frame}
 
 \section{0x3: Stateful Attacks}
 {
