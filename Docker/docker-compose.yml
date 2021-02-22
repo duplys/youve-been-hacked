@@ -1,0 +1,14 @@
+version: "2"
+services:
+  vulnapp:
+    build: .
+    ports:
+      - "8888:80"
+    volumes:
+      - ./tmp:/opt/tmp
+  zap:
+    image: owasp/zap2docker-stable
+    ports:
+      - "8080:8080"
+      - "8090:8090"
+    command: ["zap-webswing.sh"]

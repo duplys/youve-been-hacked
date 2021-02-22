@@ -25,4 +25,4 @@ COPY ins-webroot/hacking-index.html /var/www/html/
 ADD ins-webroot/app /var/www/html/app/
 ADD ins-webroot/daten /var/www/html/daten/
 
-#CMD ["./lamp_starter.sh"]
+ENTRYPOINT ["./lamp_starter.sh"]
