@@ -5,7 +5,7 @@ An interactive web security course based on Carsten Eiler's book "You've Been Ha
 This repository contains Dockerfiles, setup instructions, some code and write-ups for carrying out the experiments described in Carsten Eiler's book "You've Been Hacked" on security vulnerabilities in web applications. It also contains slides summarizing each chapter that can be used for teaching.
 
 ## Creating Docker Containers
-tbd
+Running the demo web application in a Docker container is the easiest way to get started. The `Docker` directory in this repository contains the `Dockerfile` needed to build the Docker image with the vulnerable demo web application.
 
 ## Starting the Containers
 First, we need to create a new Docker network:
