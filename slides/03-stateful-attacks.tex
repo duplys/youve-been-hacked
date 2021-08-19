@@ -1,0 +1,128 @@
+\begin{frame}
+    \frametitle{State}
+        \begin{itemize}
+        \item HTTP, the protocol for transfering data between the server and the client, is stateless
+        \item Example: HTTP doesn't manage information about pages previously visited by the client, i.e., any URL can be requested by the client at any time. 
+        \item If statefulness is required (e.g., page B shall only be served if the client has previously visited page A), the web application must manage a \textit{session}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{statefulness: Web Shop Example}
+    \begin{itemize}
+        \item Malicious user adds items into the shopping cart
+        \item She then skips the page where credit card information must be entered and proceeds directly to the checkout page
+        \item If the web application doesn't enforce the correct sequence of pages, the user would succesfully place an order without having entered any payment details 
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Managing State Information}
+    There are two options to manage state information in web:
+    \begin{itemize}
+        \item the state information is stored on the server; the users are identified using a \textit{session ID}
+        \item the state information is stored on the client
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Hidden Input Fields}
+    State information can be located in hidden input fields, e.g., 
+    \begin{center}
+        \begin{verbatim}
+            <input name="id" value="1234" type="hidden">        
+        \end{verbatim}
+    \end{center}
+
+    Such data fields can be easily manipulated using a tool like ZAP-Proxy or using web developer tools in the web browser. Thus, an attacker can easily manipulate hidden input fields. 
+\end{frame}
+
+\begin{frame}
+    \frametitle{Hidden Input Fields: Finding Vulnerabilities}
+    For every hidden input field in the application, you must examine whether the web application's behavior changes if the values of these input fields are altered.
+
+    A classical anti-pattern (luckily not so common anymore) is the use of hidden input fields for storing item price in a web shop. Yet another example is the storage of the user's status, e.g., a signed in user instead of a "guest" or administrator instead of a standard user.
+\end{frame}
+
+\begin{frame}
+    \frametitle{Hidden Input Fields: Protecting Against Attacks}
+    \begin{itemize}
+        \item Core issue with hidden input fields: state information is stored \textit{on the client} where it can be easily manipulated by a malicious user
+        \item Main defense philosophy: \textit{never trust the client}
+        \item Critical information must always be stored on the server
+        \item Values received from the client must always be checked \& validated
+        \item If values must be stored on the client (e.g., session IDs), they should be encrypted or hashed
+    \end{itemize}     
+\end{frame}
+
+\begin{frame}
+    \frametitle{URL Parameters}
+    \begin{itemize}
+        \item (State) information can be transmitted in the URL
+        \item In contrast to forms, transmitting information via URL parameters does not require clicking a submit button
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{URL Parameters: Finding Vulnerabilities}
+    \begin{itemize}
+        \item Using URL parameters to transmit information is a threat, because it is trivial to manipulate them
+        \item Look for URL parameters identified during the recon phase
+        \item Investigate what happens when you change these parameters. Does this cause an unexpected and unintended change of the state of the web application?
+        \item \verb|http://www.webapp.example/editprofile.php?id=123|
+        \item What happens when you change \verb|id|? Can you edit the profile of a different user?
+        \item Are there (hidden) parameters to activate debug information, e.g., \verb|debug=on|, \verb|debug=1| or \verb|debug=true|?
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{URL Parameters: Defending Against Attacks}
+    \begin{itemize}
+        \item Core issue with URL parameters: state information is stored \textit{on the client} where it can be easily manipulated by a malicious user
+        \item URL parameters must always be checked \& validated
+        \item If possible, they should be encrypted or hashed
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Cookie Parameters}
+    \begin{itemize}
+        \item For a long time, cookies were the only option to persistently store data on the client
+        \item It is still the prevailing solution
+        \item Cookies are frequently used for user identification, e.g., at consecutive visits of a web application
+        \item Attacks based on cookie manipulation are called \textit{cookie poisoning}  
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Cookies}
+    \begin{itemize}
+        \item Persistent vs non-persistent cookies
+        \item \verb|secure| vs \verb|HttpOnly| cookies
+        \item Persistent cookies are stored on client's hard drive as long as their date is validated
+        \item Non-persistent cookies are stored in RAM and are deleted when the web browser is closed
+        \item \verb|secure| cookies are transmitted only via an HTTPS connection
+        \item \verb|HttpOnly| cookies are transmitted via HTTP or HTTPS, but cannot be accessed by JavaScript
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Cookie Parameters: Storage and Manipulation}
+    \begin{itemize}
+        \item 
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Cookie Parameters: Finding Vulnerabilities}
+    \begin{itemize}
+        \item 
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Cookie Parameters: Defending Against Attacks}
+    \begin{itemize}
+        \item 
+    \end{itemize}
+\end{frame}
