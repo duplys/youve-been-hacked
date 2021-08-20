@@ -109,19 +109,96 @@
 \begin{frame}
     \frametitle{Cookie Parameters: Storage and Manipulation}
     \begin{itemize}
-        \item 
+        \item All web browsers store cookies in known filesystem locations and in known formats
+        \item An attacker can easily manipulate this data before it is used by a web application
+        \item It is possible to manipulate cookies \textit{on the fly}, e.g., using a tool like the ZAProxy
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Cookie Parameters: Storage and Manipulation}
+    \begin{itemize}
+        \item Unlike with URL parameters, the attacker can also manipulate the date when the cookie expires, i.e., she can manipulate the cookie's lifetime
+        \item In general, cookies can give you access to things like sessions, profiles, etc.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Cookie Parameters: Storage and Manipulation}
+    Example:
+    \begin{itemize}
+        \item \texttt{weather.xyz} offers detailed weather information against payment
+        \item \texttt{weather.xyz} uses cookies that contain \texttt{userID} to identify users
+        \item The cookie is valid for the user's subscription period, e.g., a month
+        \item Information stored in the cookie is processed by \texttt{weather.xyz} without additional authentication
+        \item Attack 1: malicious user manipulates \texttt{userID} to acess \texttt{weather.xyz} as another user
+        \item Attack 2: malicious user extends their subscription by manipulating the cookie expiration date (by changing the Unix-timestamp in the cookie)
+        \item Attack 3: cookies often store the number of failed login attempts. When they reach a specific threshold, say 5, \texttt{weather.xyz} deactivates that user account for 10 minutes to protect against brute force attacks. The attacker bypasses this defense by setting the value of failed login attempts to 0 after each login attempt. Since this can be easily automated, brute force attacks become trivial.
     \end{itemize}
 \end{frame}
 
 \begin{frame}
     \frametitle{Cookie Parameters: Finding Vulnerabilities}
     \begin{itemize}
-        \item 
+        \item For every cookie found during recon phase, you must check whether a parameter manipulation results in an illegal state change of the web application
+        \item Manipulation should also include cookie parameters like expiration
+        \item To detect cookie-related vulnerabilities more efficiently, \textit{decrease} the expiration date and check whether the web application denies its service
+        \item As an alternative -- if you have access to the server-side source code of the web application -- check whether the source code uses the cookie expiration date as input parameter
     \end{itemize}
 \end{frame}
 
 \begin{frame}
     \frametitle{Cookie Parameters: Defending Against Attacks}
+    \begin{itemize}
+        \item 
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{URL Jumping}
+    \begin{itemize}
+        \item 
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{URL Jumping}
+    \begin{itemize}
+        \item 
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{URL Jumping}
+    \begin{itemize}
+        \item 
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{URL Jumping}
+    \begin{itemize}
+        \item 
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{URL Jumping}
+    \begin{itemize}
+        \item 
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{URL Jumping}
+    \begin{itemize}
+        \item 
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{URL Jumping}
     \begin{itemize}
         \item 
     \end{itemize}
