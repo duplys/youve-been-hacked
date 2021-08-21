@@ -1,7 +1,7 @@
 \begin{frame}
     \frametitle{State}
         \begin{itemize}
-        \item HTTP, the protocol for transfering data between the server and the client, is stateless
+        \item HTTP, the protocol for transferring data between the server and the client, is stateless
         \item Example: HTTP doesn't manage information about pages previously visited by the client, i.e., any URL can be requested by the client at any time. 
         \item If statefulness is required (e.g., page B shall only be served if the client has previously visited page A), the web application must manage a \textit{session}
     \end{itemize}
@@ -12,7 +12,7 @@
     \begin{itemize}
         \item Malicious user adds items into the shopping cart
         \item She then skips the page where credit card information must be entered and proceeds directly to the checkout page
-        \item If the web application doesn't enforce the correct sequence of pages, the user would succesfully place an order without having entered any payment details 
+        \item If the web application doesn't enforce the correct sequence of pages, the user would successfully place an order without having entered any payment details 
     \end{itemize}
 \end{frame}
 
@@ -109,7 +109,7 @@
 \begin{frame}
     \frametitle{Cookie Parameters: Storage and Manipulation}
     \begin{itemize}
-        \item All web browsers store cookies in known filesystem locations and in known formats
+        \item All web browsers store cookies in known file system locations and in known formats
         \item An attacker can easily manipulate this data before it is used by a web application
         \item It is possible to manipulate cookies \textit{on the fly}, e.g., using a tool like the ZAProxy
     \end{itemize}
@@ -131,7 +131,7 @@
         \item \texttt{weather.xyz} uses cookies that contain \texttt{userID} to identify users
         \item The cookie is valid for the user's subscription period, e.g., a month
         \item Information stored in the cookie is processed by \texttt{weather.xyz} without additional authentication
-        \item Attack 1: malicious user manipulates \texttt{userID} to acess \texttt{weather.xyz} as another user
+        \item Attack 1: malicious user manipulates \texttt{userID} to access \texttt{weather.xyz} as another user
         \item Attack 2: malicious user extends their subscription by manipulating the cookie expiration date (by changing the Unix-timestamp in the cookie)
         \item Attack 3: cookies often store the number of failed login attempts. When they reach a specific threshold, say 5, \texttt{weather.xyz} deactivates that user account for 10 minutes to protect against brute force attacks. The attacker bypasses this defense by setting the value of failed login attempts to 0 after each login attempt. Since this can be easily automated, brute force attacks become trivial.
     \end{itemize}
@@ -150,56 +150,122 @@
 \begin{frame}
     \frametitle{Cookie Parameters: Defending Against Attacks}
     \begin{itemize}
-        \item 
-    \end{itemize}
-\end{frame}
-
-
-\begin{frame}
-    \frametitle{URL Jumping}
-    \begin{itemize}
-        \item 
+        \item In general, cookie poisoning -- attacks that manipulate cookies -- cannot be eliminated
+        \item Cookies are stored on the client and a malicious user can always manipulate data on the client (even data of other users)
+        \item Two prominent attacks in this context are \textit{cross-site-scripting} (XSS) and \textit{cross-site-request-forgery} (CSRF)
+        \item Attacker exploits web browser capabilities to set a cookie for a different domain
     \end{itemize}
 \end{frame}
 
 \begin{frame}
-    \frametitle{URL Jumping}
+    \frametitle{Cookie Parameters: Defending Against Attacks}
     \begin{itemize}
-        \item 
-    \end{itemize}
-\end{frame}
-
-\begin{frame}
-    \frametitle{URL Jumping}
-    \begin{itemize}
-        \item 
+        \item As a general rule, never trust data supplied by the client
+        \item For example, store subscription's expiration date or the number of failed login attempts on the server
+        \item If storing data on the client is unavoidable, encrypt or hash that data
+        \begin{itemize}
+            \item Question to the audience: why?
+        \end{itemize} 
     \end{itemize}
 \end{frame}
 
 \begin{frame}
     \frametitle{URL Jumping}
     \begin{itemize}
-        \item 
+        \item Eve abuses the intended sequence of web pages. This gives her access to functions that by design must be unavailable at that point in time. 
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{URL Jumping: An Example}
+    In a typical web shop, the intended sequence of transactions -- i.e., pages that a shop's customer visits -- could look something like this:
+    \begin{enumerate}
+        \item Search for a suitable product at \exurl{catalogue.php}
+        \item add an article to the shopping cart at \exurl{add.php}
+        \item verify the customer order at \exurl{order.php}
+        \item provide shipping information (customer's postal address) at \exurl{shipping.php}
+        \item enter credit card information at \exurl{payment.php}
+        \item checkout \& finish the order at \exurl{checkout.php}
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}
+    \frametitle{URL Jumping: An Example}
+    \begin{itemize}
+        \item If \attacker can jump from step 4 (\exurl{shipping.php}) directly to step 6 (\exurl{checkout.php}), she might be able to order an item without paying for it
+        \item Another example: \attacker could try to post a message to an online forum with creating an account
+        \item In general, \attacker tries to identify URLs that must be called in a specific sequence and tries to manipulate this sequence 
     \end{itemize}
 \end{frame}
 
 \begin{frame}
-    \frametitle{URL Jumping}
+    \frametitle{URL Jumping: Locating the Vulnerabilities}
     \begin{itemize}
-        \item 
+        \item Make a complete list of URLs in your web application and whether certain URLs must be called in a specific order
+        \item Use information gathered during recon phase
+        \item For every URL sequence:
+        \begin{itemize}
+            \item Call the URLs in the intended order and document the parameters passed to the web application
+            \item Diverge from the intended sequence and see what happens. Are there any error messages (e.g., "You first must create a user") or are specific URL/pages not accessible?
+            \item If there is no error message and the URLs can be accessed in any order, check whether this represents an actual, exploitable vulnerability
+        \end{itemize}
     \end{itemize}
 \end{frame}
 
 \begin{frame}
-    \frametitle{URL Jumping}
+    \frametitle{Defense against URL Jumping}
     \begin{itemize}
-        \item 
+        \item URL jumping is a security issue only when the sequence in which URLs are accessed is relevant for the web application
+        \item In that case, you need to check that the correct sequence is used, e.g., \texttt{checkout.php} would check if the user previously visited \texttt{payment.php} which, in turn, would check if the user previously visited \texttt{shipping.php}  
     \end{itemize}
 \end{frame}
 
 \begin{frame}
-    \frametitle{URL Jumping}
+    \frametitle{Defending against URL Jumping}
+    There are 3 options to identify a previously visited URL:
+    \begin{enumerate}
+        \item The URL (or the corresponding ID) is stored in a hidden input field or in an URL parameter
+        \item The URL (or the corresponding ID) is stored in a cookie
+        \item The URL, from which the user is allegedly coming, is compared to the \texttt{Referer} field value in the HTTP header 
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Defending against URL Jumping}
     \begin{itemize}
-        \item 
+        \item As shown previously, option 1 (hidden input field) and option 2 (cookie) are insecure as they can be easily manipulate by \attacker
+        \item That leaves us with option 3 (\texttt{Referer} value)
+    \end{itemize}
+    An HTTP request could look like this:
+    \begin{center}
+        \begin{verbatim}
+            Get /checkout.php HTTP/1.1
+            Host: www.shop.xyz
+            User-Agent: Mozilla/5.0 (Macintosh; U; PPC Mac OS X; de-de) [...]
+            Accept: */*
+            Accept-Encoding: gzip, deflate
+            Accept-Language: de-de
+            Connection: keep-alive
+            Referer: https://www.shop.xyz/payment.php
+        \end{verbatim}
+    \end{center}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Defending against URL Jumping}
+    \begin{itemize}
+        \item The \texttt{Referer} value is automatically set by the web browser
+        \item In case of a bookmark or a direct entry in the web browser's address field the \texttt{Referer} value does not exist in the HTTP header
+        \item However, the \texttt{Referer} value can be omitted by the web browser (for privacy reasons), removed from the HTTP request by a proxy or manipulated by \attacker
+        \item \texttt{Referer} value can be manipulated using a tool like ZAProxy or using a dedicated client where the individual values of the HTTP header can be defined manually
+        \item So \texttt{Referer} value is also insecure
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Defending against URL Jumping}
+    \begin{itemize}
+        \item In the end, the only effective defense against URL jumping -- similar to other attacks -- is to store state information on the server
+        \item Specifically, the information about the visited URLs for each user can be stored temporarily in the web application (or persistently in a database)
     \end{itemize}
 \end{frame}

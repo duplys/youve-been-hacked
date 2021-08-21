@@ -72,6 +72,10 @@ You'll need to import the dynamic SSL certificate into Firefox. (go to ZAP --> O
 
 Now, in your Firefox browser you need to enter the following URL: `http://host.docker.internal:8888/daten/kapitel1.html`. The reason for this is that if you use `127.0.0.1` together with the ZAP proxy, once that HTTP request arrives at the proxy, the proxy running in a docker container tries to resolve it and hits itself. So you get a "connection refused" warning and a Bad Gateway HTML response.
 
+## Spell Checking
+```shell
+$ aspell -c -t slides.tex -d en
+```
 
 ## References
 * https://security.secure.force.com/security/tools/webapp/zapbrowsersetup
@@ -84,3 +88,4 @@ Now, in your Firefox browser you need to enter the following URL: `http://host.d
 * https://www.zaproxy.org/docs/docker/about/
 * https://medium.com/volosoft/running-penetration-tests-for-your-website-as-a-simple-developer-with-owasp-zap-493d6a7e182b
 * https://www.rheinwerk-verlag.de/youve-been-hacked-alles-ueber-exploits-gegen-webanwendungen/
+* https://tex.stackexchange.com/questions/15/spell-checking-latex-documents

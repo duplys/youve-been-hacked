@@ -15,6 +15,10 @@
 \urlstyle{same}
 
 
+
+\newcommand{\exurl}[1]{\texttt{www.shop.xyz/#1}}
+\newcommand{\attacker}{the attacker}
+
 \title{\textbf{You've Been Hacked}}
 \subtitle{An (Interactive) Course on Web Security\newline\vfill}
 \author{\textbf{Paul Duplys}}
@@ -58,9 +62,22 @@
 \end{frame}
 
 \begin{frame}
+    \frametitle{Conventions}
+    \begin{itemize}
+        \item Alice, Bob: benign users
+        \item Eve: malicious user \& attacker
+        \item Server: web server or service in the cloud running a web application or serving a website
+        \item Client: web browser on a user's computer (and sometimes the entire user's computer)
+    \end{itemize}
+
+\end{frame}
+
+\begin{frame}
     \frametitle{\texttt{docker image ls}}
     Where are the instruction located for how to build the Docker files and use the repository?
 \end{frame}
+
+
 
 \section{0x1: Web Security 101}
 
@@ -168,7 +185,7 @@
         \item Suspicious comments in the HTML code (\texttt{<!-- default password:...})
         \item Sensitive information embedded in the HTML code
         \item Error messages from the web application
-        \item Error messages from the webserver and http responses
+        \item Error messages from the web server and HTTP responses
     \end{itemize}
 \end{frame}
 
@@ -191,7 +208,7 @@
     \frametitle{Investigating Individual Web Pages}
     Visit all pages and \textbf{inspect their source code}. Look for things like:
     \begin{itemize}
-        \item \textbf{Leaky HTML comments} (comments containing e.g., code fragements, configuration parameters, server names, SQL table descriptions, etc.)
+        \item \textbf{Leaky HTML comments} (comments containing e.g., code fragments, configuration parameters, server names, SQL table descriptions, etc.)
         \item \textbf{Hidden input fields} (\texttt{<input type='hidden' ...>})
         \item \textbf{SQL queries} printed in the page source due to programming or configuration errors (reveal the structure of the database and the queries used)
         \item \textbf{IP addresses of internal servers}
@@ -215,10 +232,10 @@
    \begin{itemize}
        \item Are there unlinked resources likes directories or files?
        \item E.g., if there are links to files financial-report18.pdf and financial-report19.pdf, is there an unpublished file financial-report20.pdf?
-       \item Are there any hints to the structure of file names or subdirectories?
+       \item Are there any hints to the structure of file names or sub directories?
        \item E.g., if the web application contains user profiles, is it possible to access an arbitrary profile using \texttt{user-[number].html} or \texttt{user.php?id=[number]}?
-       \item Are there unlinked subdirectories like \texttt{test/} or \texttt{admin/}?
-       \item Does the webserver contain unused libraries or example application code that contains hints to known vulnerabilities or the internals of the web application? 
+       \item Are there unlinked sub-directories like \texttt{test/} or \texttt{admin/}?
+       \item Does the web server contain unused libraries or example application code that contains hints to known vulnerabilities or the internals of the web application? 
        \item What else is running on the server? SSH?
    \end{itemize}
 \end{frame}
@@ -253,7 +270,7 @@
 
 \begin{frame}
     \frametitle{Investigating Client-Side Code: Static Pages}
-    Hidden forms (\texttt{type="hidden"}) are sometimes used to store values used by the web application. A classic mistake is to store the price of the items in a webshop application (since you can easily manipulate them before sending them to the server).
+    Hidden forms (\texttt{type="hidden"}) are sometimes used to store values used by the web application. A classic mistake is to store the price of the items in a web shop application (since you can easily manipulate them before sending them to the server).
 \end{frame}
 
 \begin{frame}
@@ -268,7 +285,7 @@
     After checking HTML, next step is to check the JavaScript code.
     \vfill
     \begin{itemize}
-        \item Is JavaScript used to validate input data? If so, maybe the check on the server side is ommited. 
+        \item Is JavaScript used to validate input data? If so, maybe the check on the server side is omitted. 
         \item What files and scripts are being loaded? Any known vulnerabilities?
         \item Are there vulnerabilities in the JavaScript program logic itself? Any logic flaws that can be exploited?
     \end{itemize}   
