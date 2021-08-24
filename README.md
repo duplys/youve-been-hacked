@@ -7,7 +7,7 @@ This repository contains Dockerfiles, setup instructions, some code and write-up
 ## Creating Docker Containers
 Running the demo web application in a Docker container is the easiest way to get started. The `Docker` directory in this repository contains the `Dockerfile` needed to build the Docker image with the vulnerable demo web application.
 
-## Starting the Containers
+## Running Dockers Containers
 First, we need to create a new Docker network:
 ```shell
 $ docker network create -d bridge hack-network
@@ -89,3 +89,5 @@ $ aspell -c -t slides.tex -d en
 * https://medium.com/volosoft/running-penetration-tests-for-your-website-as-a-simple-developer-with-owasp-zap-493d6a7e182b
 * https://www.rheinwerk-verlag.de/youve-been-hacked-alles-ueber-exploits-gegen-webanwendungen/
 * https://tex.stackexchange.com/questions/15/spell-checking-latex-documents
+* [HTTP Cookies](https://en.wikipedia.org/wiki/HTTP_cookie)
+* [Session Fixation](https://en.wikipedia.org/wiki/Session_fixation)

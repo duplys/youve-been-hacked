@@ -269,3 +269,124 @@
         \item Specifically, the information about the visited URLs for each user can be stored temporarily in the web application (or persistently in a database)
     \end{itemize}
 \end{frame}
+
+
+\begin{frame}
+    \frametitle{Session Highjacking}
+    \begin{itemize}
+        \item Numerous attacks can be alleviated by storing state information on the server (instead of client)
+        \item In that case, the web application needs a way to identify the user
+        \item The notion of a \emph{session} is used to associate state information (stored on the server) to a specific user
+        \item The web application assigns each session a unique \emph{session identifier} (session-ID)
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Session Highjacking}
+    \begin{itemize}
+        \item Session-ID is a number or a combination of numbers and letters that uniquely identifies a session
+        \item Session-ID is assigned to the client (user) upon the first HTTP request to the web application
+        \item Every subsequent request carries the session-ID so that the web application can identify the client (user) and retrieve the corresponding state information stored on the server
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Session Highjacking}
+    \begin{figure}[htb]
+        \centering
+        \includegraphics[scale=.5]{uml/session-hijacking.png}
+    \end{figure}
+    \begin{itemize}
+        \item Because the session-ID must be stored on the client, it can be manipulated or stolen
+        \item An attack exploiting this vulnerability is referred to as \emph{session hijacking}
+        \item \Attacker gets hold of the session-ID information to gain unauthorized access to the web application
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Session Highjacking}
+
+    \begin{center}
+        \begin{verbatim}
+            Name=Alice
+            userID=1234
+            last=2021-08-24
+        \end{verbatim}
+    \end{center}
+
+    \begin{itemize}
+        \item A special case of session hijacking is the so-called \emph{authorization bypass}
+        \item Example: web application identifies the client (user) based on a cookie containing the user name, the user ID and the date of the last session
+        \item Is there are user with ID 1235?
+        \item \Attacker can change \verb|userID| and use the manipulated cookie to take on the identity of another user
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Finding Session Highjacking Vulnerabilities}
+    \begin{itemize}
+        \item First, identify the session-ID in the web application, e.g., search for parameters whose names contain \texttt{ID}, \texttt{TOKEN}, \texttt{SESSIONID}, \texttt{ID} or similar strings. These parameters can be located in hidden input fields, URL parameters or in cookies.
+        \item Once you identified a potential session-ID, change it and check whether you can impersonate another user
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Defending against Session Highjacking}
+    \begin{itemize}
+        \item Session hijacking requires a valid session-ID. \Attacker has essentially 4 options to get hold of it:
+        \begin{itemize}
+            \item Cross-site-scripting (XSS): XSS attacks are commonly used to steal cookies (more on this later). Make sure your web application has no XSS vulnerabilities. In addition, you can set \texttt{HTTPOnly} flag to prevent access to cookies from within JavaScript 
+            \item Eavesdropping network traffic: if \attacker can read network traffic between the client and the web application, she can extract the session-ID. Ensure that you web application uses TLS (HTTPS).
+            \item Searching logfiles: if \attacker has access to the web server (or proxy) logfiles, she can search them for session-IDs that were transmitted via \texttt{GET} requests. Session-ID should therefore be transmitted in cookies or via \texttt{POST} requests.  
+            \item Brute-force attack: \attacker can try to guess the format of your session-IDs and try out various (random) combination until she finds a valid session-ID. You should use large random values as session-IDs.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Defending against Session Highjacking}
+    \begin{itemize}
+        \item Performing session identification based on the combination of the session-ID and the IP address of the client makes session hijacking more difficult
+        \item Instead of the IP address, you can also use e.g., the \texttt{User-Agent} header (i.e., user the client browser "model" as an additional identification factor)
+        \item To reduce session hijacking-related risks, you should end the sessions after a specific time and make the corresponding session-IDs invalid
+        \item This can be done using a "hard" time-out (e.g., every session ends after 30 minutes) or a "soft" time-out (e.g., session ends after 10 minutes of inactivity)
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Session Fixation}
+    \begin{figure}[htb]
+        \centering
+        \includegraphics[scale=.5]{uml/session-fixation.png}
+    \end{figure}
+    \begin{itemize}
+        \item Instead of stealing or guessing the session-ID, \attacker attempts to fixate other user's session-ID
+        \item Session fixation attacks are typically web based and rely on session identifiers being accepted from URL parameters or POST data
+        \item Example: \attacker sends Alice an email with a link to \texttt{login.php?session=34fgfash6f4fss3}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Finding Session Fixation Vulnerabilities}
+    \begin{itemize}
+        \item Use the information from the recon phase to identify session-IDs
+        \item Call the web application with a session-ID that is already used, i.e., has been set by the web application
+        \item Example: if the entry to the web application is \texttt{www.examle.xyz} and the web application, in turn, returns \texttt{www.example.xyz/index.php?session=[valid-session-ID]}, call this URL directly
+        \item If you can login and your session-ID is \texttt{[valid-session-ID]}, you've found a session fixation vulnerability
+        \item If session-ID is transmitted in a cookie, use ZAProxy to manipulate it   
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Defending against Session Fixation}
+    \begin{itemize}
+        \item Make sure your web application generates a new, random session-ID each time a user logs in
+        \item The same behaviour must be implemented when a new users signs up
+        \item Some web applications accept arbitrary session-IDs, i.e., session-IDs that they have not generated
+        \item This makes Eve's life easier because she doesn't need to obtain a valid session-ID
+        \item Thus, your web application should only accept session-IDs that it actually generated 
+        \item Make sure it's impossible to reactivate expired sessions with known "old" session-IDs. If a session expired, a new session must be created with a new session-ID and a new state. Otherwise Eve can mount replay attacks.
+        \item You should also leverage the information in HTTP header's \texttt{Referer} field. If the observed sequence of URLs doesn't match the expected sequence, either URL jumping is taking place or two clients (users) are using the same session-ID
+    \end{itemize}
+\end{frame}
