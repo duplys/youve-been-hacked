@@ -1,7 +1,7 @@
 \documentclass[aspectratio=169]{beamer}
 %\usetheme{Boadilla}
 %\usetheme{default}
-\usecolortheme{owl}
+\usecolortheme[snowy]{owl}
 \usepackage{color}
 \usepackage{fontawesome}
 \usepackage{tikz}
@@ -21,6 +21,8 @@
 \newcommand{\exurl}[1]{\texttt{www.shop.xyz/#1}}
 \newcommand{\attacker}{the attacker}
 \newcommand{\Attacker}{The attacker}
+\newcommand{\eve}{Eve\ }
+\newcommand{\alice}{Alice\ }
 
 \title{\textbf{You've Been Hacked}}
 \subtitle{An (Interactive) Course on Web Security\newline\vfill}
@@ -67,8 +69,8 @@
 \begin{frame}
     \frametitle{Conventions}
     \begin{itemize}
-        \item Alice, Bob: benign users
-        \item Eve: malicious user \& attacker
+        \item Alice, Bob: legitimate, benign users
+        \item Eve: malicious user, attacker
         \item Server: web server or service in the cloud running a web application or serving a website
         \item Client: web browser on a user's computer (and sometimes the entire user's computer)
     \end{itemize}
@@ -115,7 +117,7 @@
 
     \begin{itemize}
         \item Get to know your target
-        \item Test for stateful attacks
+        \item Test for attacks on web application's state
         \item Test for attacks on authentication
         \item Test for cross-site-scripting (XSS)
         \item Test for SQL injection
@@ -376,7 +378,7 @@
 %    Three
 %\end{frame}
 
-\section{0x3: Stateful Attacks}
+\section{0x3: Attacks on Web Application's State}
 {
 \usebackgroundtemplate{\includegraphics[width=\paperwidth]{./img/aldebaran.jpg}}
 \begin{frame}

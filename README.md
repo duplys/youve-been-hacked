@@ -91,3 +91,5 @@ $ aspell -c -t slides.tex -d en
 * https://tex.stackexchange.com/questions/15/spell-checking-latex-documents
 * [HTTP Cookies](https://en.wikipedia.org/wiki/HTTP_cookie)
 * [Session Fixation](https://en.wikipedia.org/wiki/Session_fixation)
+* [Clickjacking](https://en.wikipedia.org/wiki/Clickjacking)
+* [Cross-Site Request Forgery](https://en.wikipedia.org/wiki/Cross-site_request_forgery)
