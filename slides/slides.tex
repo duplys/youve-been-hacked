@@ -1,7 +1,8 @@
 \documentclass[aspectratio=169]{beamer}
 %\usetheme{Boadilla}
 %\usetheme{default}
-\usecolortheme[snowy]{owl}
+%\usecolortheme[snowy]{owl}
+\usecolortheme{owl}
 \usepackage{color}
 \usepackage{fontawesome}
 \usepackage{tikz}
@@ -44,20 +45,6 @@
     \tableofcontents
 \end{frame}
 
-\section{0x0: Preliminaries}
-
-{
-\usebackgroundtemplate{\includegraphics[width=\paperwidth]{./img/aldebaran.jpg}}
-\begin{frame}
-\huge{\textcolor{white}{\textbf{0x0: Preliminaries}}}
-\end{frame}
-}
-
-\begin{frame}
-    \frametitle{\texttt{whoami}}
-    short intro/bio.
-\end{frame}
-
 \begin{frame}
     \frametitle{\texttt{man slides}}
 
@@ -67,20 +54,24 @@
 \end{frame}
 
 \begin{frame}
-    \frametitle{Conventions}
-    \begin{itemize}
-        \item Alice, Bob: legitimate, benign users
-        \item Eve: malicious user, attacker
-        \item Server: web server or service in the cloud running a web application or serving a website
-        \item Client: web browser on a user's computer (and sometimes the entire user's computer)
-    \end{itemize}
-
+    \frametitle{\texttt{whoami}}
+    short intro/bio.
 \end{frame}
 
+\section{0x0: Preliminaries}
+
+{
+%\usebackgroundtemplate{\includegraphics[width=\paperwidth]{./img/aldebaran.jpg}}
 \begin{frame}
-    \frametitle{\texttt{docker image ls}}
-    Where are the instruction located for how to build the Docker files and use the repository?
+\huge{\textcolor{white}{\textbf{0x0: Preliminaries}}}
 \end{frame}
+}
+
+%\input{00-preliminaries.tex}
+
+
+
+
 
 
 

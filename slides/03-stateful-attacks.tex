@@ -607,24 +607,10 @@
 \begin{frame}
     \frametitle{Defending against CSRF}
     \begin{itemize}
-        \item You must add a unique, random token to every relevant \texttt{GET} and \texttt{POST} request
+        \item You must add a unique, random token for every relevant \texttt{GET} and \texttt{POST} request
         \item It is important that the token has sufficient entropy so that Eve cannot simply send multiple request with highly likely token values
         \item The web application must only perform actions when the correct token is supplied
         \item Then, Eve cannot prepare a valid request because she can't guess the random token value (she could learn the token value using XSS, though) 
         \item For really important actions, you should add an additional password check
-    \end{itemize}
-\end{frame}
-
-\begin{frame}
-    \frametitle{Defending against CSRF}
-    \begin{itemize}
-        \item 
-    \end{itemize}
-\end{frame}
-
-\begin{frame}
-    \frametitle{Defending against CSRF}
-    \begin{itemize}
-        \item 
     \end{itemize}
 \end{frame}

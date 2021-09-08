@@ -6,9 +6,16 @@ services:
       - "8888:80"
     volumes:
       - ./tmp:/opt/tmp
+    networks:
+      - hacknet
   zap:
     image: owasp/zap2docker-stable
+    user: zap
     ports:
       - "8080:8080"
       - "8090:8090"
+    networks:
+      - hacknet
     command: ["zap-webswing.sh"]
+networks:
+  hacknet:
