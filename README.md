@@ -37,8 +37,18 @@ $
 If all went well, you should see the two containers there.
 
 ## Setting up ZAProxy
+As described [in this post](https://www.zaproxy.org/docs/docker/webswing/), you will need to activate ZAProxy (ZAP), configure your browser to [proxy via ZAP](https://www.zaproxy.org/docs/desktop/start/proxies/) and [import the public ZAP Root certificate](https://www.zaproxy.org/docs/desktop/ui/dialogs/options/dynsslcert/#install) so that it is trusted to sign websites. You can create a separate browser profile for proxying through ZAP (see [this page for Firefox](https://support.mozilla.org/en-US/kb/profile-manager-create-remove-switch-firefox-profiles)).
 
-Next, go your web browser and visit `http://127.0.0.1:8080/zap/` (as [described here](https://www.zaproxy.org/docs/docker/webswing/))
+First, fire up your web browser and visit `http://127.0.0.1:8080/zap/` (as [described here](https://www.zaproxy.org/docs/docker/webswing/)). You'll see how the ZAP Web UI starts and performs updates, etc.
+
+
+When you do this ZAP will create 2 files on your mapped drive:
+
+    owasp_zap_root_ca.crt - the public ZAP Root CA certificate
+    owasp_zap_root_ca.key - the private ZAP Root CA certificate
+
+
+
 
 Next, you'll need the IP address of the Docker container running the vulnerable application. To extract this, do:
 
