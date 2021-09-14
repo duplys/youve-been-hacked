@@ -66,7 +66,10 @@ First, fire up your web browser and visit `http://127.0.0.1:8080/zap/`. You'll s
 
 Next, go to "Tools" -> "Options" -> "Dynamic SSL Certificates" -> "Save" and save the ZAP certificate on your host and import it into your browser. Read off the IP address and port number at the bottom of ZAP's window and configure your web browser to use that IP/port as proxy. 
 
-You're now ready to play with the vulnerable demo app: go to `http://host.docker.internal:8888/daten/kapitel1.html` and you should see the web application. You must use `host.docker.internal` instead of `127.0.0.1` when proxying through ZAP. Otherwise, your HTTP request would be resolved to the localhost of the Docker container where ZAP is running and you would get a "connection refused" warning and a Bad Gateway response.
+## Accessing the Vulnerable Web App through ZAP
+You're now ready to play with the vulnerable demo app. If you started the containers using `docker-compose`, you need to look up the vulnerable app container IP address. Run `docker container inspect docker_vulnapp_1` and look for `IPAddress:` under `Networks:`. Assuming that this IP address on your machine is `172.18.0.3`, you can access the vulnerable app (through ZAP) using `http://172.18.0.3/daten/kapitel1.html`. (Within the Docker network, vulnerable app container exposes its port 80; since 80 is a standard port for HTTP, you don't need to write it out explicitly). 
+
+If you started the Docker containers manually, the above might not work for you. In that case, try `http://host.docker.internal:8888/daten/kapitel1.html` and you should see the web application. You must use `host.docker.internal` instead of `127.0.0.1` when proxying through ZAP. Otherwise, your HTTP request would be resolved to the localhost of the Docker container where ZAP is running and you would get a "connection refused" warning and a Bad Gateway response.
 
 ## References
 * https://security.secure.force.com/security/tools/webapp/zapbrowsersetup
