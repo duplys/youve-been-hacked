@@ -1,114 +1,94 @@
 \begin{frame}
-    \frametitle{Conventions}
-    \begin{itemize}
-        \item Alice, Bob: legitimate users
-        \item Eve: malicious user, attacker
-        \item Server: web server running a web application
-        \item Client: web browser (or computer running the web browser)
-    \end{itemize}
+	\frametitle{Conventions}
+	\begin{itemize}
+		\item Alice, Bob: legitimate users
+		\item Eve: malicious user, attacker
+		\item Server: web server running a web application
+		\item Client: web browser (or computer running the web browser)
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{GitHub Repo}
+	\begin{itemize}
+		\item \url{https://github.com/duplys/youve-been-hacked}
+		\item Dockerfile \& setup instructions
+		\item Write-ups
+		\item Code
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Build Docker Image}
+	\begin{itemize}
+		\item Running the demo web application in a Docker container is the easiest way to get started
+		\item \texttt{Docker} dir contains \texttt{Dockerfile} for the vulnerable web application
+		\item \texttt{Makefile} (\texttt{make build}) or \texttt{docker-compose}
+	\end{itemize}
+	
 \end{frame}
 
 \begin{frame}[fragile]
-    \frametitle{Build Docker Image}
-    \begin{itemize}
-        \item Running the demo web application in a Docker container is the easiest way to get started
-        \item \texttt{Docker} directory contains \texttt{Dockerfile} to build the Docker image with the vulnerable web application
-        \item In \texttt{Docker} dir, run \verb|make build|
-    \end{itemize}
-
+	\frametitle{Starting Docker Containers}
+	\begin{itemize}
+        \item You'll need an empty directory \texttt{tmp} in the \texttt{Docker} dir
+		\item In \texttt{Docker} dir, run \verb|$ docker-compose up|
+	\end{itemize}
 \end{frame}
 
-\begin{frame}
-    \frametitle{Starting Docker Containers}
-
+\begin{frame}[fragile]
+	\frametitle{Accessing ZAProxy}
+	\begin{itemize}
+		\item In your web browser, hit \verb|http://127.0.0.1:8080/zap/|
+        \item For documentation, see \url{https://www.zaproxy.org/docs/docker/webswing/}
+	\end{itemize}
 \end{frame}
 
-\begin{frame}
-    \frametitle{Starting Docker Containers}
-
+\begin{frame}[fragile]
+	\frametitle{Accesing the vulnerable Web application}
+	\begin{itemize}
+		\item \verb|$ docker container inspect docker_vulnapp_1 | grep "IPAddress"|
+	\end{itemize}
 \end{frame}
 
-\begin{frame}
-    \frametitle{Starting Docker Containers}
-
-\end{frame}
-
-\begin{frame}
-    \frametitle{Starting Docker Containers}
-
-\end{frame}
-
-
-\begin{frame}
-    \frametitle{Cleaning Up}
-
+\begin{frame}[fragile]
+	\frametitle{Cleaning Up}
+	\begin{itemize}
+		\item Run \verb|$ docker-compose down|
+	\end{itemize}
 \end{frame}
 
 
-## Creating Docker Containers
-Running the demo web application in a Docker container is the easiest way to get started. The `Docker` directory in this repository contains the `Dockerfile` needed to build the Docker image with the vulnerable demo web application.
-
-## Running Dockers Containers
-First, we need to create a new Docker network:
-```shell
-$ docker network create -d bridge hack-network
-```
-
-```shell
-$ docker container run --rm -it -p 8888:80 --network="hack-network" -v $(PWD)/tmp:/opt/tmp youve-been-hacked
-```
-Note that for the above command, you will need an empty directory `tmp` in the directory where you run this command.
-
-and 
-
-```shell
-$ docker run -u zap -p 8080:8080 -p 8090:8090 --network="hack-network" -i owasp/zap2docker-stable zap-webswing.sh
-```
-
-Open a new terminal window and check whether everything worked out:
-
-```shell
-$  docker container ps -a                                                                   
-CONTAINER ID        IMAGE                     COMMAND             CREATED              STATUS                      PORTS                                            NAMES
-eb264e004d2a        owasp/zap2docker-stable   "zap-webswing.sh"   58 seconds ago       Up 57 seconds (unhealthy)   0.0.0.0:8080->8080/tcp, 0.0.0.0:8090->8090/tcp   kind_cohen
-9ea057ec1cea        youve-been-hacked         "/bin/bash"         About a minute ago   Up About a minute           0.0.0.0:8888->80/tcp                             exciting_maxwell
-$
-```
-
-If all went well, you should see the two containers there.
-
-## Setting up ZAProxy
-
-Next, go your web browser and visit `http://127.0.0.1:8080/zap/` (as [described here](https://www.zaproxy.org/docs/docker/webswing/))
+% Next, go your web browser and visit `http://127.0.0.1:8080/zap/` (as [described here](https://www.zaproxy.org/docs/docker/webswing/))
 
 Next, you'll need the IP address of the Docker container running the vulnerable application. To extract this, do:
 
 ```shell
 $ % docker container inspect exciting_maxwell
 [
-    {
-        "Id": "9ea057ec1cea78eb1ab3abe4ba9f1cadb42ab751bf7bc1c9b0f277a286eeeddf",
-        "Created": "2020-11-20T19:35:08.9811261Z",
-
--- snip --
-
-            "Networks": {
-                "hack-network": {
-                    "IPAMConfig": null,
-                    "Links": null,
-                    "Aliases": [
-                        "9ea057ec1cea"
-                    ],
-                    "NetworkID": "84aadd9f11e09968530e5093bdb8c95df7f30aa7efa7526ab315e30558126e03",
-                    "EndpointID": "adc8e373fe433540b208498a592d3598d79cb46ab860d1a302301ae9378136b2",
-                    "Gateway": "172.19.0.1",
-                    "IPAddress": "172.19.0.2",
-                    "IPPrefixLen": 16,
-                    "IPv6Gateway": "",
-
--- snip --
-```
-
-You'll need to import the dynamic SSL certificate into Firefox. (go to ZAP --> Option -> Dynamic SSL Certificates and download one...). 
-
-Now, in your Firefox browser you need to enter the following URL: `http://host.docker.internal:8888/daten/kapitel1.html`. The reason for this is that if you use `127.0.0.1` together with the ZAP proxy, once that HTTP request arrives at the proxy, the proxy running in a docker container tries to resolve it and hits itself. So you get a "connection refused" warning and a Bad Gateway HTML response.
+	{
+		"Id": "9ea057ec1cea78eb1ab3abe4ba9f1cadb42ab751bf7bc1c9b0f277a286eeeddf",
+		"Created": "2020-11-20T19:35:08.9811261Z",
+		
+		-- snip --
+		
+		"Networks": {
+			"hack-network": {
+				"IPAMConfig": null,
+				"Links": null,
+				"Aliases": [
+					"9ea057ec1cea"
+				],
+				"NetworkID": "84aadd9f11e09968530e5093bdb8c95df7f30aa7efa7526ab315e30558126e03",
+				"EndpointID": "adc8e373fe433540b208498a592d3598d79cb46ab860d1a302301ae9378136b2",
+				"Gateway": "172.19.0.1",
+				"IPAddress": "172.19.0.2",
+				"IPPrefixLen": 16,
+				"IPv6Gateway": "",
+				
+				-- snip --
+				```
+				
+				You'll need to import the dynamic SSL certificate into Firefox. (go to ZAP --> Option -> Dynamic SSL Certificates and download one...). 
+				
+				Now, in your Firefox browser you need to enter the following URL: `http://host.docker.internal:8888/daten/kapitel1.html`. The reason for this is that if you use `127.0.0.1` together with the ZAP proxy, once that HTTP request arrives at the proxy, the proxy running in a docker container tries to resolve it and hits itself. So you get a "connection refused" warning and a Bad Gateway HTML response.
