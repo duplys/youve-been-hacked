@@ -83,6 +83,7 @@ If you started the Docker containers manually, the above might not work for you.
 * https://medium.com/volosoft/running-penetration-tests-for-your-website-as-a-simple-developer-with-owasp-zap-493d6a7e182b
 * https://www.rheinwerk-verlag.de/youve-been-hacked-alles-ueber-exploits-gegen-webanwendungen/
 * https://tex.stackexchange.com/questions/15/spell-checking-latex-documents
+* [Innocent Code Rules](https://innocentcode.thathost.com/rules.html)
 * [HTTP Cookies](https://en.wikipedia.org/wiki/HTTP_cookie)
 * [Session Fixation](https://en.wikipedia.org/wiki/Session_fixation)
 * [Clickjacking](https://en.wikipedia.org/wiki/Clickjacking)
