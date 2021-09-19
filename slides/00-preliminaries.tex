@@ -1,3 +1,30 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Web Security 101 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+    \frametitle{Finding Vulnerabilities in Web Applications}
+    In a nutshell, \textbf{to find vulnerabilities in your web application}, ...
+    \begin{enumerate}
+        \item ... test various values for parameters used by the web application and see what happens (conceptually similar to fuzzing)
+        \item ... check web application code for bugs that may lead to security vulnerabilities (typically missing checks of input values or missing countermeasures against certain types of attacks)
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}
+    %\frametitle{OWASP TOP 10}
+
+    The \href{https://owasp.org/www-project-top-ten/}{Open Web Application Security Project (OWASP)} maintains a list of Top 10 vulnerabilities in web applications.
+
+    \begin{center}
+        \includegraphics[scale=.35,angle=2]{img/owasp-top10.png}    
+    \end{center}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Naming Conventions %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \begin{frame}
 	\frametitle{Conventions}
 	\begin{itemize}
@@ -7,6 +34,10 @@
 		\item Client: web browser (or computer running the web browser)
 	\end{itemize}
 \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Setting Up Docker Containers %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}
 	\frametitle{GitHub Repo}
@@ -19,35 +50,56 @@
 \end{frame}
 
 \begin{frame}
-	\frametitle{Build Docker Image}
+	\frametitle{Building Docker Image}
 	\begin{itemize}
 		\item Running the demo web application in a Docker container is the easiest way to get started
 		\item \texttt{Docker} dir contains \texttt{Dockerfile} for the vulnerable web application
-		\item \texttt{Makefile} (\texttt{make build}) or \texttt{docker-compose}
+		\item Build the container using \texttt{make build} or \texttt{docker-compose}
 	\end{itemize}
-	
+		
 \end{frame}
 
 \begin{frame}[fragile]
 	\frametitle{Starting Docker Containers}
 	\begin{itemize}
-        \item You'll need an empty directory \texttt{tmp} in the \texttt{Docker} dir
+		\item You'll need an empty directory \texttt{tmp} in the \texttt{Docker} dir
 		\item In \texttt{Docker} dir, run \verb|$ docker-compose up|
 	\end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]
-	\frametitle{Accessing ZAProxy}
+	\frametitle{Setting up ZAP}
+	You need to activate ZAProxy (ZAP), configure your browser to proxy via ZAP and import the public ZAP Root certificate (see \url{https://www.zaproxy.org/docs/docker/webswing/} for details). Do the following steps:
 	\begin{itemize}
-		\item In your web browser, hit \verb|http://127.0.0.1:8080/zap/|
-        \item For documentation, see \url{https://www.zaproxy.org/docs/docker/webswing/}
+		\item Go to \verb|http://127.0.0.1:8080/zap/|
+		\item You'll see how the ZAP Web UI starts
+		\item Start a ZAP session, choose "don't want to persist"
+		\item Select "Update All" in the "Manage Add-ons" window
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Setting up ZAP}
+	\centering
+	\includegraphics[scale=.2]{img/zap-new-session-find-ip-address-and-port-for-proxy.png}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Setting up ZAP}
+	\begin{itemize}
+		\item Go to "Tools" $\rightarrow$ "Options" $\rightarrow$ "Dynamic SSL Certificates" $\rightarrow$ "Save"
+		\item Save ZAP certificate on your host and import it into your browser.
+		\item Read off the ZAP's IP address and port number at the bottom of ZAP's window
+		\item Configure your web browser to use that IP/port as proxy
 	\end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]
-	\frametitle{Accesing the vulnerable Web application}
+	\frametitle{Accessing the Vulnerable Web App through ZAP}
 	\begin{itemize}
-		\item \verb|$ docker container inspect docker_vulnapp_1 | grep "IPAddress"|
+		\item Look up the vulnerable app container IP address (for \texttt{docker-compose})
+		\item Run \verb|docker container inspect docker_vulnapp_1| and look for \verb|IPAddress:| under \verb|Networks:|
+		\item If the container's IP address on your machine is \verb|x.y.z.w|, you can access the vulnerable web app under \verb|http://x.y.z.w/daten/kapitel1.html|
 	\end{itemize}
 \end{frame}
 
@@ -57,38 +109,3 @@
 		\item Run \verb|$ docker-compose down|
 	\end{itemize}
 \end{frame}
-
-
-% Next, go your web browser and visit `http://127.0.0.1:8080/zap/` (as [described here](https://www.zaproxy.org/docs/docker/webswing/))
-
-Next, you'll need the IP address of the Docker container running the vulnerable application. To extract this, do:
-
-```shell
-$ % docker container inspect exciting_maxwell
-[
-	{
-		"Id": "9ea057ec1cea78eb1ab3abe4ba9f1cadb42ab751bf7bc1c9b0f277a286eeeddf",
-		"Created": "2020-11-20T19:35:08.9811261Z",
-		
-		-- snip --
-		
-		"Networks": {
-			"hack-network": {
-				"IPAMConfig": null,
-				"Links": null,
-				"Aliases": [
-					"9ea057ec1cea"
-				],
-				"NetworkID": "84aadd9f11e09968530e5093bdb8c95df7f30aa7efa7526ab315e30558126e03",
-				"EndpointID": "adc8e373fe433540b208498a592d3598d79cb46ab860d1a302301ae9378136b2",
-				"Gateway": "172.19.0.1",
-				"IPAddress": "172.19.0.2",
-				"IPPrefixLen": 16,
-				"IPv6Gateway": "",
-				
-				-- snip --
-				```
-				
-				You'll need to import the dynamic SSL certificate into Firefox. (go to ZAP --> Option -> Dynamic SSL Certificates and download one...). 
-				
-				Now, in your Firefox browser you need to enter the following URL: `http://host.docker.internal:8888/daten/kapitel1.html`. The reason for this is that if you use `127.0.0.1` together with the ZAP proxy, once that HTTP request arrives at the proxy, the proxy running in a docker container tries to resolve it and hits itself. So you get a "connection refused" warning and a Bad Gateway HTML response.

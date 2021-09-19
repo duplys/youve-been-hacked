@@ -58,6 +58,10 @@
     short intro/bio.
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% 0x0: Preliminaries %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \section{0x0: Preliminaries}
 
 {
@@ -67,41 +71,8 @@
 \end{frame}
 }
 
-%\input{00-preliminaries.tex}
+\input{00-preliminaries.tex}
 
-
-
-
-
-
-
-\section{0x1: Web Security 101}
-
-{
-\usebackgroundtemplate{\includegraphics[width=\paperwidth]{./img/aldebaran.jpg}}
-\begin{frame}
-\huge{\textcolor{white}{\textbf{0x1: Web Security 101}}}
-\end{frame}
-}
-
-\begin{frame}
-    %\frametitle{How Do You Find Vulnerabilities in Web Applications?}
-    In a nutshell, \textbf{to find vulnerabilities in your web application}, ...
-    \begin{enumerate}
-        \item ... test various values for parameters used by the web application and see what happens (conceptually similar to fuzzing)
-        \item ... check web application code for bugs that may lead to security vulnerabilities (typically missing checks of input values or missing countermeasures against certain types of attacks)
-    \end{enumerate}
-\end{frame}
-
-\begin{frame}
-    %\frametitle{OWASP TOP 10}
-
-    The \href{https://owasp.org/www-project-top-ten/}{Open Web Application Security Project (OWASP)} maintains a list of Top 10 vulnerabilities in web applications.
-
-    \begin{center}
-        \includegraphics[scale=.35,angle=2]{img/owasp-top10.png}    
-    \end{center}
-\end{frame}
 
 \begin{frame}
     \frametitle{Fahrplan}
@@ -121,7 +92,12 @@
 
 \end{frame}
 
-\section{0x2: Recon}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% 0x1: Recon %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\section{0x1: Recon}
 
 {
 %\setbeamercolor{background canvas}{bg=yellow}
@@ -369,7 +345,7 @@
 %    Three
 %\end{frame}
 
-\section{0x3: Attacks on Web Application's State}
+\section{0x2: Attacks on Web Application's State}
 {
 \usebackgroundtemplate{\includegraphics[width=\paperwidth]{./img/aldebaran.jpg}}
 \begin{frame}
@@ -379,7 +355,7 @@
 
 \input{03-stateful-attacks.tex}
 
-\section{0x4: Attacks on Authentication}
+\section{0x3: Attacks on Authentication}
 {
 \usebackgroundtemplate{\includegraphics[width=\paperwidth]{./img/aldebaran.jpg}}
 \begin{frame}
@@ -387,7 +363,7 @@
 \end{frame}
 }
 
-\section{0x5: Cross-Site-Scripting (XSS)}
+\section{0x4: Cross-Site-Scripting (XSS)}
 {
 \usebackgroundtemplate{\includegraphics[width=\paperwidth]{./img/aldebaran.jpg}}
 \begin{frame}
@@ -395,7 +371,7 @@
 \end{frame}
 }
 
-\section{0x6: SQL Injection}
+\section{0x5: SQL Injection}
 {
 \usebackgroundtemplate{\includegraphics[width=\paperwidth]{./img/aldebaran.jpg}}
 \begin{frame}
@@ -403,7 +379,7 @@
 \end{frame}
 }
 
-\section{0x7: Other Injection-Based Vulnerabilities}
+\section{0x6: Other Injection-Based Vulnerabilities}
 {
 \usebackgroundtemplate{\includegraphics[width=\paperwidth]{./img/aldebaran.jpg}}
 \begin{frame}
@@ -411,7 +387,7 @@
 \end{frame}
 }
 
-\section{0x8: Attacks on File Operations}
+\section{0x7: Attacks on File Operations}
 {
 \usebackgroundtemplate{\includegraphics[width=\paperwidth]{./img/aldebaran.jpg}}
 \begin{frame}
@@ -419,7 +395,7 @@
 \end{frame}
 }
 
-\section{0x9: Buffer Overflows, Format Strings and Integer Bugs}
+\section{0x8: Buffer Overflows, Format Strings and Integer Bugs}
 {
 \usebackgroundtemplate{\includegraphics[width=\paperwidth]{./img/aldebaran.jpg}}
 \begin{frame}
@@ -427,7 +403,7 @@
 \end{frame}
 }
 
-\section{0xA: Architectural Attacks}
+\section{0x9: Architectural Attacks}
 {
 \usebackgroundtemplate{\includegraphics[width=\paperwidth]{./img/aldebaran.jpg}}
 \begin{frame}
@@ -435,7 +411,7 @@
 \end{frame}
 }
 
-\section{0xB: Attacks on the Web Server}
+\section{0xA: Attacks on the Web Server}
 {
 \usebackgroundtemplate{\includegraphics[width=\paperwidth]{./img/aldebaran.jpg}}
 \begin{frame}
@@ -447,16 +423,9 @@
 {
 \usebackgroundtemplate{\includegraphics[width=\paperwidth]{./img/aldebaran.jpg}}
 \begin{frame}
-\huge{\textcolor{white}{\textbf{0xC: Misc}}}
+\huge{\textcolor{white}{\textbf{0xB: Misc}}}
 \end{frame}
 }
-
-\begin{frame}
-    \frametitle{More Things to Consider}
-    One \pause
-    Two \pause
-    Three
-\end{frame}
 
 \begin{frame}
     \frametitle{Bibliography}
