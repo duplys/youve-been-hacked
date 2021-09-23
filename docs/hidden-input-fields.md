@@ -9,7 +9,7 @@
 
 From security perspecitve, hidden input fields can contain state information that is critical for the correct functionality of the web application. Because hidden input fields can be easily manipulated using a proxy like ZAP or web developer tools in the web browser, they represent a potential security vulnerability.
 
-## Vulnerability Detection
+## Detection
 `grep` your web applications's source code for hidden input fields and test whether the application's behavior changes when you change the values of these hidden input fields.
 
 A classical anti-pattern &mdash; luckily not so common anymore &mdash; is to use hidden input fields for storing item prices in a web shop. Another example is storing user's status, e.g., whether the user is signed in or just a guest, or whether the user is an an administrator or just a standard user.
