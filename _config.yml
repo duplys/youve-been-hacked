@@ -28,7 +28,7 @@ twitter_username: duplys
 github_username:  duplys
 
 # Build settings
-theme: minima
+theme: jekyll-theme-modernist
 plugins:
   - jekyll-feed
 
