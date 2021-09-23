@@ -1,7 +1,0 @@
-To start the "You've Been Hacked" demo web application, first run the script lamp_starter.sh:
-
-```shell
-$ ./lamp_starter.sh
-```
-
-This script starts the Apache2 service and the MySQL service needed for the demo web application to run.

@@ -1,4 +1,0 @@
-AuthType Basic
-AuthName "Beta Admin-Bereich"
-AuthUserFile /var/www/app/beta/admin/.htpasswd
-require valid-user
