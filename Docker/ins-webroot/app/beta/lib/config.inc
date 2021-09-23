@@ -4,6 +4,10 @@
      Konfigurationsdatei fuer Hacking-Demo Beta
 
  */
+define ("USERNAME", "root");
+define ("PASSWORD", "");
+define ("HOSTNAME", "localhost");
+define ("DATENBANK", "hackdemodb");
 
 /*
 Default-Spracheinstellung - Moegliche Werte: de oder en
