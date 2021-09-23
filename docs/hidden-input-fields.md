@@ -1,7 +1,7 @@
 # Hidden Input Fields
 
 ## Introduction
-A hidden field let web developers include data that cannot be seen or modified by users when a form is submitted[1].
+[A hidden field let web developers include data that cannot be seen or modified by users when a form is submitted][1].
 Hidden input fields can contain state information: 
 
 ```html
