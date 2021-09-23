@@ -1,6 +1,7 @@
 # Hidden Input Fields
 
 ## Introduction
+A hidden field let web developers include data that cannot be seen or modified by users when a form is submitted[1].
 Hidden input fields can contain state information: 
 
 ```html
@@ -26,3 +27,4 @@ Values received from the client must always be checked & validated
 If values must be stored on the client (e.g., session IDs), they should be encrypted or hashed
 
 ## References
+[1]: https://www.w3schools.com/tags/att_input_type_hidden.asp
