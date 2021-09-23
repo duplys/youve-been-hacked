@@ -1,2 +1,2 @@
 # TOC
-* [Hidden Input Fields](hidden-input-fields.md)
+1. [Hidden Input Fields](hidden-input-fields.md)
