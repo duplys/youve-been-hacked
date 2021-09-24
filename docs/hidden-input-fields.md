@@ -22,7 +22,37 @@ The main defense philosophy &mdash; as with numerous other web security threats 
 If values must be stored on the client (e.g., session IDs), they should be encrypted or hashed to make their manipulation harder.
 
 ## Demo
+[Start Docker containers with `docker-compose up`, start ZAP session, update ZAP, download and import SSL certificate, navigate to the vulnerable web application, and run `install.php` to populate the database][2].
+
+Click on "Administrationsbereich" to get to:
+
+![Administrationsbereich](img/app-beta-admin.png "Administrationsbereich")
+
+While this would be conceiled 
+
+Navigate to `app/beta/index.php` and click on "Backend":
+
+![Beta app to backend](img/beta-app-to-backend.png "Beta app to backend")
+
+That brings you to:
+
+![Beta app to backend](img/beta-app-at-backend.png "Beta app to backend")
+
+Next, log in as user `test` with password `test`:
+
+![Beta app login as test/test](img/beta-app-logging-in-as-test-test.png "Beta app login as test/test")
+
+Once you're loged in, you can create a new entry:
+
+![Beta app login as test/test](img/beta-app-backend-text.png "Beta app login as test/test")
+
+View the source code of the page you're currently logged in and you'll see that it contains hidden input fields:
+
+![Hidden input fields in the beta app](img/hidden-input-fields-source-code.png "Hidden input fields in the beta app")
 
 
-## References
+
+
+
 [1]: https://www.w3schools.com/tags/att_input_type_hidden.asp
+[2]: start-docker-containers.md
