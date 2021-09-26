@@ -42,17 +42,35 @@ Next, log in as user `test` with password `test`:
 
 ![Beta app login as test/test](img/beta-app-logging-in-as-test-test.png "Beta app login as test/test")
 
-Once you're loged in, you can create a new entry:
+Once you're loged in, you'll see this form for creating a new text entry:
 
 ![Beta app login as test/test](img/beta-app-backend-text.png "Beta app login as test/test")
 
-View the source code of the page you're currently logged in and you'll see that it contains hidden input fields:
+If you view the source code of that web page (while logged in), you'll discover that it contains hidden input fields `BenutzerID` and `BenutzerStatus`:
 
 ![Hidden input fields in the beta app](img/hidden-input-fields-source-code.png "Hidden input fields in the beta app")
 
+You are currently logged in as user `test`. Set break on all requests and responses in ZAP (click on the green circle, it turns red):
 
+![ZAP brake for requests and responses](img/zap-break-requests-responses.png "ZAP brake for requests and responses")
 
+Enter title and text and submit the text entry:
 
+![Beta app submit text entry](img/app-beta-submit-text-entry.png "Beta app submit text entry")
+
+Switch to ZAP. Your HTTP request to the vulnerable web application is on hold and you can manipulate the values of the hidden input fields:
+
+![ZAP manipulate hidden input field](img/zap-manipulate-hidden-input-field.png "ZAP manipulate hidden input field")
+
+Change the value of `BenutzerID` to `1` and click on "Submit and continue to next breakpoint":
+
+![ZAP manipulate BenutzerID](img/zap-benutzerid-manipulation.png "ZAP manipulate BenutzerID")
+
+Go back to the vulnerable web application. As you can see, you are now logged in as `autor`, the user with ID 1:
+
+![Logged in as autor](img/app-beta-logged-in-as-autor.png "Logged in as autor")
+
+This hidden input field vulnerability effectively allows you to post content under a different user name.
 
 [1]: https://www.w3schools.com/tags/att_input_type_hidden.asp
 [2]: start-docker-containers.md
