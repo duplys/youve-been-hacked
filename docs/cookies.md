@@ -35,6 +35,39 @@ This allows following 3 attacks:
 * Attack 2: Eve extends their subscription by manipulating the cookie expiration date (by changing the Unix-timestamp in the cookie)
 * Attack 3: cookies often store the number of failed login attempts. When they reach a specific threshold, say 5, `https://www.weather.xyz` deactivates that user account for 10 minutes to protect against brute force attacks. To bypass this, Eve sets the value of failed login attempts to 0 after each login attempt. Because she can automate this, she can trivially launch brute force attacks.
 
+## Firefox
+Here's cookies file in Firefox under Ubuntu Linux:
+```shell
+$ ls ~/.mozilla/firefox/3c4wnfog.default/cookies.sqlite
+/home/paul/.mozilla/firefox/3c4wnfog.default/cookies.sqlite
+```
+
+To view the cookies, install `sqliteviewer`:
+
+```shell
+$ sudo apt install sqlitebrowser
+-- snip --
+
+Reading package lists... Done
+Building dependency tree       
+Reading state information... Done
+The following additional packages will be installed:
+  libqcustomplot1.3 libqt5scintilla2-12v5 libqt5scintilla2-l10n
+The following NEW packages will be installed:
+  libqcustomplot1.3 libqt5scintilla2-12v5 libqt5scintilla2-l10n sqlitebrowser
+0 upgraded, 4 newly installed, 0 to remove and 3 not upgraded.
+Need to get 1.677 kB of archives.
+After this operation, 7.315 kB of additional disk space will be used.
+Do you want to continue? [Y/n] 
+Get:1 http://archive.ubuntu.com/ubuntu xenial/universe amd64 libqcustomplot1.3 amd64 1.3.2+dfsg1-1 [244 kB]
+
+-- snip --
+$ sqlitebrowser
+```
+
+...
+
+
 ## Detection
 * For every cookie found during recon phase, you must check whether a parameter manipulation results in an illegal state change of the web application
 * Manipulation should also include cookie parameters like expiration
