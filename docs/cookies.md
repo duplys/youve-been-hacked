@@ -65,7 +65,8 @@ Get:1 http://archive.ubuntu.com/ubuntu xenial/universe amd64 libqcustomplot1.3 a
 $ sqlitebrowser
 ```
 
-...
+![Example cookies](img/cookies/example-cookies.png "Example cookies")
+
 
 
 ## Detection
@@ -86,7 +87,11 @@ As a **general rule**, **never trust** data supplied by **the client**
 * If storing data on the client is unavoidable, encrypt or hash that data (do you understand why? if not, here is [a hint](https://en.wikipedia.org/wiki/Key_derivation_function#Password_hashing))
 
 ## Demo
+Activate the breakpoint in ZAP and point your browser to `/app/index.php`. Step through and you should see something like this:
 
+![PHPSESSID cookie](img/cookies/phpsessid-cookie.png "PHPSESSID cookie")
+
+The vulnerable web app uses a cookie with the name `PHPSESSID` with the session of PHP. 
 
 
 ## References
