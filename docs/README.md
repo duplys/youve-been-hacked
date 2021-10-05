@@ -8,7 +8,6 @@
 7. [Hidden Input Fields](hidden-input-fields.md)
 8. [URL Jumping](url-jumping.md)
 9. [Cookies](cookies.md)
-10.
-10.
-11.
+10. [Session Hijacking](session-hijacking.md)
+11. [Session Fixation](session-fixation.md)
 
