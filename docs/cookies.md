@@ -89,7 +89,6 @@ id          originAttributes  name        value                             host
 244010                        CONSENT     PENDING+164                       .youtube-n  /           2145916800  1631286251302000  1623328546971000  1           0           0                 0           0
 244213                        _parsely_v  {%22id%22:%22pid=10c804b822f90ba  .medium.co  /           1657518149  1633359804110000  1593156893230000  0           0           0                 0           0
 245843                        wt_nv       1                                 .heise.de   /           1639470288  1631785256343000  1623918288538001  0           0           0                 1           1
-      0
 
 -- snip --
 
