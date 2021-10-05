@@ -59,9 +59,6 @@ In the end, the only effective defense against URL jumping &mdash; similar to ot
 Specifically, the information about the visited URLs for each user can be stored temporarily in the web application (or persistently in a database).
 
 ## Demo
-
-
-
 From the root `app/index.php` of the vulnerable web app, you can go to `admin/index.php` and `backend/index.php`. From `backend/index.php` you can go to `backend/plugins/plugin2.php`.
 
 Hence, you need to test whether it is possible to jump to `backend/plugins/plugin2.php` **without** visiting `backend/index.php` first.
@@ -81,3 +78,5 @@ Now go back to `app/index.php`, logout and call `app/backend/plugins/plugin2.php
 ![Plugin2 without login](img/url-jumping/call-plugins2.php-from-app-index.php-without-login.png "Plugin2 without login")
 
 As you can see, the web application distinguishes between a user that is logged in and a user that is not logged in. Consequently, URL `app/backend/plugins/plugin2.php` is not susceptible to URL jumping.
+
+For the **curious** among you: explore the beta app ;)

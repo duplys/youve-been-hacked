@@ -42,31 +42,57 @@ $ ls ~/.mozilla/firefox/3c4wnfog.default/cookies.sqlite
 /home/paul/.mozilla/firefox/3c4wnfog.default/cookies.sqlite
 ```
 
-To view the cookies, install `sqliteviewer`:
+You can use `sqlite3` to view the cookies:
 
-```shell
-$ sudo apt install sqlitebrowser
--- snip --
 
-Reading package lists... Done
-Building dependency tree       
-Reading state information... Done
-The following additional packages will be installed:
-  libqcustomplot1.3 libqt5scintilla2-12v5 libqt5scintilla2-l10n
-The following NEW packages will be installed:
-  libqcustomplot1.3 libqt5scintilla2-12v5 libqt5scintilla2-l10n sqlitebrowser
-0 upgraded, 4 newly installed, 0 to remove and 3 not upgraded.
-Need to get 1.677 kB of archives.
-After this operation, 7.315 kB of additional disk space will be used.
-Do you want to continue? [Y/n] 
-Get:1 http://archive.ubuntu.com/ubuntu xenial/universe amd64 libqcustomplot1.3 amd64 1.3.2+dfsg1-1 [244 kB]
-
--- snip --
-$ sqlitebrowser
-```
 
 ![Example cookies](img/cookies/example-cookies.png "Example cookies")
 
+
+```
+sqlite> .tables
+moz_cookies
+sqlite> .schema moz_cookies
+CREATE TABLE moz_cookies(id INTEGER PRIMARY KEY, originAttributes TEXT NOT NULL DEFAULT '', name TEXT, value TEXT, host TEXT, path TEXT, expiry INTEGER, lastAccessed INTEGER, creationTime INTEGER, isSecure INTEGER, isHttpOnly INTEGER, inBrowserElement INTEGER DEFAULT 0, sameSite INTEGER DEFAULT 0, rawSameSite INTEGER DEFAULT 0, CONSTRAINT moz_uniqueid UNIQUE (name, host, path, originAttributes));
+sqlite>
+sqlite> .headers ON
+sqlite> .mode column
+sqlite> select * from moz_cookies;
+id          originAttributes  name        value                             host        path        expiry      lastAccessed      creationTime      isSecure    isHttpOnly  inBrowserElement  sameSite    rawSameSite
+----------  ----------------  ----------  --------------------------------  ----------  ----------  ----------  ----------------  ----------------  ----------  ----------  ----------------  ----------  -----------
+
+-- snip --
+
+46267                         AMCV_EA76A  -894706358%7CMCIDTS%7C18212%7CMC  .office.co  /           1636660785  1633414111640000  1573502384810000  0           0           0                 0           0
+127836                        TOptOut     1                                 .microsoft  /           1754379020  1633413930071000  1593086404120000  1           0           0                 0           0
+144845                        _ga         GA1.2.1009283779.1533136493       .github.co  /           1663765118  1633413173313000  1533136492841000  0           0           0                 0           0
+153757                        cookie-pre  analytics:accepted                .github.co  /           1633552460  1633413173313000  1602016475436000  1           0           0                 1           1
+153902                        MicrosoftA  4bbe0f8b-2a0f-49bc-89d4-515d0b26  teams.micr  /dl/launch  1633673334  1633248526541000  1574409265001000  0           0           0                 0           0
+153903                        MicrosoftA  2019-11-22T07:54:25.002Z          teams.micr  /dl/launch  1633673334  1633248526541000  1574409265001001  0           0           0                 0           0
+167391                        MSFPC       GUID=791d6e95ab584dd0adfe95ea45f  docs.micro  /           1639236455  1631093593641000  1607700455670000  1           0           0                 0           0
+220261                        MUIDB       1061410D31256B0D2D7B4F8F30906A26  teams.micr  /           1651385976  1633248526359000  1617689976073000  1           1           0                 0           0
+220892                        MUID        008817A96F1467020D3A07BB6E276648  .office.co  /           1651477106  1633414111640000  1617781106674000  1           0           0                 0           0
+233197                        OptanonAle  2021-04-28T18:19:58.311Z          .smartrecr  /           1651169998  1631892595172000  1619633998311001  0           0           0                 1           1
+234865                        DesiredAut  msal_dev3                         teams.micr  /           1651590763  1633248526359000  1610817664030001  0           0           0                 0           0
+235319                        MSFPC       GUID=791d6e95ab584dd0adfe95ea45f  teams.micr  /           1651658830  1633248526359000  1620122830831001  1           0           0                 0           0
+237317                        firstTimeL  1620629826260                     teams.micr  /           1652165826  1633248526359000  1620629826260001  0           0           0                 0           0
+237333                        deviceId    24ca7d21-04de-4bc4-8fa0-ea88970f  teams.micr  /           1652165949  1633248526359000  1620629949040001  0           0           0                 0           0
+237340                        TSREGIONCO  emea                              teams.micr  /           1636181951  1633248526359000  1620629951579000  0           0           0                 0           0
+241731                        CONSENT     YES+cb.20210530-19-p0.de+FX+549   .youtube.c  /           2146723199  1633248626552000  1533118961309001  1           0           0                 0           0
+241732                        CONSENT     YES+cb.20210530-19-p0.de+FX+549   .google.co  /           2146723199  1633409199412000  1532629491678003  1           0           0                 0           0
+241975                        bizxCompan  BOSCH                             performanc  /           1654690947  1633375990416000  1540892231303001  1           1           0                 0           0
+243953                        aws-ubid-m  574-8077604-1020110               .amazon.co  /           1654859279  1631168656512000  1623323279768000  1           1           0                 0           0
+243955                        remember-a  false                             .amazon.co  /           1654859281  1631168656512000  1623323281342001  1           0           0                 0           0
+243978                        aws-userIn  %7B%22arn%22%3A%22arn%3Aaws%3Ast  .amazon.co  /           1654859499  1631168656512000  1623323499455002  1           0           0                 0           0
+243979                        aws-userIn  eyJ0eXAiOiJKV1MiLCJrZXlSZWdpb24i  .amazon.co  /           1654859499  1631168656512000  1623323499455003  1           0           0                 0           0
+243990                        awsc-color  light                             .amazon.co  /           1654427503  1631168656512000  1623323503866001  1           0           0                 0           0
+244010                        CONSENT     PENDING+164                       .youtube-n  /           2145916800  1631286251302000  1623328546971000  1           0           0                 0           0
+244213                        _parsely_v  {%22id%22:%22pid=10c804b822f90ba  .medium.co  /           1657518149  1633359804110000  1593156893230000  0           0           0                 0           0
+245843                        wt_nv       1                                 .heise.de   /           1639470288  1631785256343000  1623918288538001  0           0           0                 1           1
+
+-- snip --
+
+```
 
 
 ## Detection
@@ -95,5 +121,7 @@ The vulnerable web app uses a cookie with the name `PHPSESSID` with the session 
 
 
 ## References
-
-
+* https://support.mozilla.org/de/questions/818843
+* https://wiki.ubuntuusers.de/SQLite/
+* https://www.sqlitetutorial.net/sqlite-tutorial/sqlite-describe-table/
+* https://stackoverflow.com/questions/947215/how-to-get-a-list-of-column-names-on-sqlite3-database
