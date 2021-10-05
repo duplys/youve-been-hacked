@@ -59,4 +59,4 @@ In the end, the only effective defense against URL jumping &mdash; similar to ot
 Specifically, the information about the visited URLs for each user can be stored temporarily in the web application (or persistently in a database).
 
 ## Demo
-
+Homework for the curious: explore the beta app.
