@@ -91,7 +91,7 @@ Activate the breakpoint in ZAP and point your browser to `/app/index.php`. Step 
 
 ![PHPSESSID cookie](img/cookies/phpsessid-cookie.png "PHPSESSID cookie")
 
-The vulnerable web app uses a cookie with the name `PHPSESSID` with the session of PHP. 
+The vulnerable web app uses a cookie with the name `PHPSESSID` with the session of PHP. Using a tool like ZAP, Eve can easily do cookie poisoning.
 
 
 ## References

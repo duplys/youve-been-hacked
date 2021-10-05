@@ -60,3 +60,24 @@ Specifically, the information about the visited URLs for each user can be stored
 
 ## Demo
 
+
+
+From the root `app/index.php` of the vulnerable web app, you can go to `admin/index.php` and `backend/index.php`. From `backend/index.php` you can go to `backend/plugins/plugin2.php`.
+
+Hence, you need to test whether it is possible to jump to `backend/plugins/plugin2.php` **without** visiting `backend/index.php` first.
+
+To do this, you first login as at `index.php`:
+
+![Log in](img/url-jumping/login-from-app-index.php.png "Log in")
+
+Next, visit `app/backend/plugins/plugin2.php`:
+
+![Plugin2 after login](img/url-jumping/call-plugins2.php-from-app-index.php-after-login.png "Plugin2 after login")
+
+This is a test script showing you your current session ID. This way, you know you're logged in. 
+
+Now go back to `app/index.php`, logout and call `app/backend/plugins/plugin2.php` again:
+
+![Plugin2 without login](img/url-jumping/call-plugins2.php-from-app-index.php-without-login.png "Plugin2 without login")
+
+As you can see, the web application distinguishes between a user that is logged in and a user that is not logged in. Consequently, URL `app/backend/plugins/plugin2.php` is not susceptible to URL jumping.

@@ -87,3 +87,18 @@
         \item This can be done using a "hard" time-out (e.g., every session ends after 30 minutes) or a "soft" time-out (e.g., session ends after 10 minutes of inactivity)
     \end{itemize}
 \end{frame}
+
+
+
+
+
+
+
+
+## Demoo
+
+
+
+Open a new tab in your web browser and visit `app/index.php` and login as `gast`/`gast`. Open a new private window (the private mode will prevent your browser from accessing the cookie set by the vulnerable web application). In the private window, visit `app/index.php` and login as `test`/`test`.
+
+Switch to ZAP, activate the breakpoint, go back to the first web browser window and click on any link. 
