@@ -23,8 +23,7 @@ Core specifications for the web:
 Hypertext Transfer Protocol (HTTP) is a stateless application-level request/response protocol that uses extensible semantics and self-descriptive message payloads:
 * HTTP is a **stateless request/response** protocol
 * HTTP relies upon the Uniform Resource Identifier (URI) standard [RFC3986] to indicate the target resource
-* Most HTTP communication consists of a retrieval request (`GET`) for a
-   representation of some resource identified by a URI
+* Most HTTP communication consists of a `GET` retrieval request for a representation of some resource identified by a URI
 
 ## Client Request
 A **client** sends an HTTP request to a server in the form of a **request message**, beginning with a request-line that includes: 
