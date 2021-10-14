@@ -1,0 +1,33 @@
+@startuml
+
+participant "Legitimate user" as U
+participant "Attacker" as A
+participant "Web server" as W
+
+skinparam backgroundColor transparent
+skinparam handwritten true
+
+skinparam sequence {
+'ArrowColor White
+'ArrowFontName Rufscript
+'ArrowFontSize 22
+'ArrowFontColor White
+  
+'LifeLineBorderColor Grey
+'LifeLineBackgroundColor #A9DCDF
+
+'ParticipantBorderColor White
+'ParticipantBackgroundColor #111111
+ParticipantFontName Rufscript
+ParticipantFontSize 24
+'ParticipantFontColor White
+}
+
+A -> W: "login.php"
+W -> A: "login.php?session=34fgfash6f4fss3"
+A -> U: "pass login.php?session=34fgfash6f4fss3"
+U -> W: "visit login.php?session=34fgfash6f4fss3"
+W -> U: "signedin.php?session=34fgfash6f4fss3"
+A -> W: "action.php?session=34fgfash6f4fss3"
+
+@enduml

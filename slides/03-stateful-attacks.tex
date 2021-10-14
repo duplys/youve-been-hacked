@@ -1,0 +1,616 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Attacks on Web Application State %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\begin{frame}
+%    \frametitle{State in Web Applications}
+%        \begin{itemize}
+%        \item HTTP, the protocol for transferring data between the server and the client, is stateless
+%        \item Example: HTTP doesn't manage information about pages previously visited by the client, i.e., any URL can be requested by the client at any time. 
+%        \item If statefulness is required (e.g., page B shall only be served if the client has previously visited page A), the web application must manage a \textit{session}
+%    \end{itemize}
+%\end{frame}
+%
+%\begin{frame}
+%    \frametitle{Statefulness: Web Shop Example}
+%    \begin{itemize}
+%        \item Malicious user adds items into the shopping cart
+%        \item She then skips the page where credit card information must be entered and proceeds directly to the checkout page
+%        \item If the web application doesn't enforce the correct sequence of pages, the user would successfully place an order without having entered any payment details 
+%    \end{itemize}
+%\end{frame}
+%
+%\begin{frame}
+%    \frametitle{Managing State Information}
+%    There are two options to manage state information in web:
+%    \begin{itemize}
+%        \item the state information is stored on the server; the users are identified using a \textit{session ID}
+%        \item the state information is stored on the client
+%    \end{itemize}
+%\end{frame}
+
+%\begin{frame}[fragile]
+%    \frametitle{Hidden Input Fields}
+%    State information can be located in hidden input fields, e.g., 
+%    \begin{center}
+%        \begin{verbatim}
+%            <input name="id" value="1234" type="hidden">        
+%        \end{verbatim}
+%    \end{center}
+%
+%    Such data fields can be easily manipulated using a tool like ZAP-Proxy or using web developer tools in the web browser. Thus, an attacker can easily manipulate hidden input fields. 
+%\end{frame}
+%
+%\begin{frame}
+%    \frametitle{Detecting Hidden Input Field Vulnerabilities}
+%    For every hidden input field in the application, you must examine whether the web application's behavior changes if the values of these input fields are altered.
+%
+%    A classical anti-pattern (luckily not so common anymore) is the use of hidden input fields for storing item price in a web shop. Yet another example is the storage of the user's status, e.g., a signed in user instead of a "guest" or administrator instead of a standard user.
+%\end{frame}
+%
+%\begin{frame}
+%    \frametitle{Defending against Hidden Input Field Attacks}
+%    \begin{itemize}
+%        \item Core issue with hidden input fields: state information is stored \textit{on the client} where it can be easily manipulated by a malicious user
+%        \item Main defense philosophy: \textit{never trust the client}
+%        \item Critical information must always be stored on the server
+%        \item Values received from the client must always be checked \& validated
+%        \item If values must be stored on the client (e.g., session IDs), they should be encrypted or hashed
+%    \end{itemize}     
+%\end{frame}
+
+%\begin{frame}
+%    \frametitle{URL Parameters}
+%    \begin{itemize}
+%        \item (State) information can be transmitted in the URL
+%        \item In contrast to forms, transmitting information via URL parameters does not require clicking a submit button
+%    \end{itemize}
+%\end{frame}
+%
+%\begin{frame}[fragile]
+%    \frametitle{URL Parameters: Finding Vulnerabilities}
+%    \begin{itemize}
+%        \item Using URL parameters to transmit information is a threat, because it is trivial to manipulate them
+%        \item Look for URL parameters identified during the recon phase
+%        \item Investigate what happens when you change these parameters. Does this cause an unexpected and unintended change of the state of the web application?
+%        \item \verb|http://www.webapp.example/editprofile.php?id=123|
+%        \item What happens when you change \verb|id|? Can you edit the profile of a different user?
+%        \item Are there (hidden) parameters to activate debug information, e.g., \verb|debug=on|, \verb|debug=1| or \verb|debug=true|?
+%    \end{itemize}
+%\end{frame}
+%
+%\begin{frame}
+%    \frametitle{Defending against URL Parameter Manipulation}
+%    \begin{itemize}
+%        \item Core issue with URL parameters: state information is stored \textit{on the client} where it can be easily manipulated by a malicious user
+%        \item URL parameters must always be checked \& validated
+%        \item If possible, they should be encrypted or hashed
+%    \end{itemize}
+%\end{frame}
+
+%\begin{frame}
+%    \frametitle{Cookie Parameters}
+%    \begin{itemize}
+%        \item For a long time, cookies were the only option to persistently store data on the client
+%        \item It is still the prevailing solution
+%        \item Cookies are frequently used for user identification, e.g., at consecutive visits of a web application
+%        \item Attacks based on cookie manipulation are called \textit{cookie poisoning}  
+%    \end{itemize}
+%\end{frame}
+%
+%\begin{frame}[fragile]
+%    \frametitle{Cookies}
+%    \begin{itemize}
+%        \item Persistent vs non-persistent cookies
+%        \item \verb|secure| vs \verb|HttpOnly| cookies
+%        \item Persistent cookies are stored on client's hard drive as long as their date is validated
+%        \item Non-persistent cookies are stored in RAM and are deleted when the web browser is closed
+%        \item \verb|secure| cookies are transmitted only via an HTTPS connection
+%        \item \verb|HttpOnly| cookies are transmitted via HTTP or HTTPS, but cannot be accessed by JavaScript
+%    \end{itemize}
+%\end{frame}
+%
+%\begin{frame}
+%    \frametitle{Cookie Parameters: Storage and Manipulation}
+%    \begin{itemize}
+%        \item All web browsers store cookies in known file system locations and in known formats
+%        \item An attacker can easily manipulate this data before it is used by a web application
+%        \item It is possible to manipulate cookies \textit{on the fly}, e.g., using a tool like the ZAProxy
+%    \end{itemize}
+%\end{frame}
+%
+%\begin{frame}
+%    \frametitle{Cookie Parameters: Storage and Manipulation}
+%    \begin{itemize}
+%        \item Unlike with URL parameters, the attacker can also manipulate the date when the cookie expires, i.e., she can manipulate the cookie's lifetime
+%        \item In general, cookies can give you access to things like sessions, profiles, etc.
+%    \end{itemize}
+%\end{frame}
+
+%\begin{frame}
+%    \frametitle{Cookie Parameters: Storage and Manipulation}
+%    Example:
+%    \begin{itemize}
+%        \item \texttt{weather.xyz} offers detailed weather information against payment
+%        \item \texttt{weather.xyz} uses cookies that contain \texttt{userID} to identify users
+%        \item The cookie is valid for the user's subscription period, e.g., a month
+%        \item Information stored in the cookie is processed by \texttt{weather.xyz} without additional authentication
+%        \item Attack 1: malicious user manipulates \texttt{userID} to access \texttt{weather.xyz} as another user
+%        \item Attack 2: malicious user extends their subscription by manipulating the cookie expiration date (by changing the Unix-timestamp in the cookie)
+%        \item Attack 3: cookies often store the number of failed login attempts. When they reach a specific threshold, say 5, \texttt{weather.xyz} deactivates that user account for 10 minutes to protect against brute force attacks. The attacker bypasses this defense by setting the value of failed login attempts to 0 after each login attempt. Since this can be easily automated, brute force attacks become trivial.
+%    \end{itemize}
+%\end{frame}
+%
+%\begin{frame}
+%    \frametitle{Cookie Parameters: Finding Vulnerabilities}
+%    \begin{itemize}
+%        \item For every cookie found during recon phase, you must check whether a parameter manipulation results in an illegal state change of the web application
+%        \item Manipulation should also include cookie parameters like expiration
+%        \item To detect cookie-related vulnerabilities more efficiently, \textit{decrease} the expiration date and check whether the web application denies its service
+%        \item As an alternative -- if you have access to the server-side source code of the web application -- check whether the source code uses the cookie expiration date as input parameter
+%    \end{itemize}
+%\end{frame}
+%
+%\begin{frame}
+%    \frametitle{Cookie Parameters: Defending Against Attacks}
+%    \begin{itemize}
+%        \item In general, cookie poisoning -- attacks that manipulate cookies -- cannot be eliminated
+%        \item Cookies are stored on the client and a malicious user can always manipulate data on the client (even data of other users)
+%        \item Two prominent attacks in this context are \textit{cross-site-scripting} (XSS) and \textit{cross-site-request-forgery} (CSRF)
+%        \item Attacker exploits web browser capabilities to set a cookie for a different domain
+%    \end{itemize}
+%\end{frame}
+%
+%\begin{frame}
+%    \frametitle{Cookie Parameters: Defending Against Attacks}
+%    \begin{itemize}
+%        \item As a general rule, never trust data supplied by the client
+%        \item For example, store subscription's expiration date or the number of failed login attempts on the server
+%        \item If storing data on the client is unavoidable, encrypt or hash that data
+%        \begin{itemize}
+%            \item Question to the audience: why?
+%        \end{itemize} 
+%    \end{itemize}
+%\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% URL Jumping %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%\begin{frame}
+%    \frametitle{URL Jumping}
+%    \begin{itemize}
+%        \item Eve abuses the intended sequence of web pages. This gives her access to functions that by design must be unavailable at that point in time. 
+%    \end{itemize}
+%\end{frame}
+%
+%\begin{frame}[fragile]
+%    \frametitle{URL Jumping: An Example}
+%    In a typical web shop, the intended sequence of transactions -- i.e., pages that a shop's customer visits -- could look something like this:
+%    \begin{enumerate}
+%        \item Search for a suitable product at \exurl{catalogue.php}
+%        \item add an article to the shopping cart at \exurl{add.php}
+%        \item verify the customer order at \exurl{order.php}
+%        \item provide shipping information (customer's postal address) at \exurl{shipping.php}
+%        \item enter credit card information at \exurl{payment.php}
+%        \item checkout \& finish the order at \exurl{checkout.php}
+%    \end{enumerate}
+%\end{frame}
+%
+%\begin{frame}
+%    \frametitle{URL Jumping: An Example}
+%    \begin{itemize}
+%        \item If \attacker can jump from step 4 (\exurl{shipping.php}) directly to step 6 (\exurl{checkout.php}), she might be able to order an item without paying for it
+%        \item Another example: \attacker could try to post a message to an online forum with creating an account
+%        \item In general, \attacker tries to identify URLs that must be called in a specific sequence and tries to manipulate this sequence 
+%    \end{itemize}
+%\end{frame}
+%
+%\begin{frame}
+%    \frametitle{URL Jumping: Locating the Vulnerabilities}
+%    \begin{itemize}
+%        \item Make a complete list of URLs in your web application and whether certain URLs must be called in a specific order
+%        \item Use information gathered during recon phase
+%        \item For every URL sequence:
+%        \begin{itemize}
+%            \item Call the URLs in the intended order and document the parameters passed to the web application
+%            \item Diverge from the intended sequence and see what happens. Are there any error messages (e.g., "You first must create a user") or are specific URL/pages not accessible?
+%            \item If there is no error message and the URLs can be accessed in any order, check whether this represents an actual, exploitable vulnerability
+%        \end{itemize}
+%    \end{itemize}
+%\end{frame}
+%
+%\begin{frame}
+%    \frametitle{Defense against URL Jumping}
+%    \begin{itemize}
+%        \item URL jumping is a security issue only when the sequence in which URLs are accessed is relevant for the web application
+%        \item In that case, you need to check that the correct sequence is used, e.g., \texttt{checkout.php} would check if the user previously visited \texttt{payment.php} which, in turn, would check if the user previously visited \texttt{shipping.php}  
+%    \end{itemize}
+%\end{frame}
+%
+%\begin{frame}
+%    \frametitle{Defending against URL Jumping}
+%    There are 3 options to identify a previously visited URL:
+%    \begin{enumerate}
+%        \item The URL (or the corresponding ID) is stored in a hidden input field or in an URL parameter
+%        \item The URL (or the corresponding ID) is stored in a cookie
+%        \item The URL, from which the user is allegedly coming, is compared to the \texttt{Referer} field value in the HTTP header 
+%    \end{enumerate}
+%\end{frame}
+%
+%\begin{frame}[fragile]
+%    \frametitle{Defending against URL Jumping}
+%    \begin{itemize}
+%        \item As shown previously, option 1 (hidden input field) and option 2 (cookie) are insecure as they can be easily manipulate by \attacker
+%        \item That leaves us with option 3 (\texttt{Referer} value)
+%    \end{itemize}
+%    An HTTP request could look like this:
+%    \begin{center}
+%        \begin{verbatim}
+%            Get /checkout.php HTTP/1.1
+%            Host: www.shop.xyz
+%            User-Agent: Mozilla/5.0 (Macintosh; U; PPC Mac OS X; de-de) [...]
+%            Accept: */*
+%            Accept-Encoding: gzip, deflate
+%            Accept-Language: de-de
+%            Connection: keep-alive
+%            Referer: https://www.shop.xyz/payment.php
+%        \end{verbatim}
+%    \end{center}
+%\end{frame}
+%
+%\begin{frame}
+%    \frametitle{Defending against URL Jumping}
+%    \begin{itemize}
+%        \item The \texttt{Referer} value is automatically set by the web browser
+%        \item In case of a bookmark or a direct entry in the web browser's address field the \texttt{Referer} value does not exist in the HTTP header
+%        \item However, the \texttt{Referer} value can be omitted by the web browser (for privacy reasons), removed from the HTTP request by a proxy or manipulated by \attacker
+%        \item \texttt{Referer} value can be manipulated using a tool like ZAProxy or using a dedicated client where the individual values of the HTTP header can be defined manually
+%        \item So \texttt{Referer} value is also insecure
+%    \end{itemize}
+%\end{frame}
+%
+%\begin{frame}
+%    \frametitle{Defending against URL Jumping}
+%    \begin{itemize}
+%        \item In the end, the only effective defense against URL jumping -- similar to other attacks -- is to store state information on the server
+%        \item Specifically, the information about the visited URLs for each user can be stored temporarily in the web application (or persistently in a database)
+%    \end{itemize}
+%\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Session Hijacking %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\begin{frame}
+%    \frametitle{Session Highjacking}
+%    \begin{itemize}
+        \item Numerous attacks can be alleviated by storing state information on the server (instead of client)
+        \item In that case, the web application needs a way to identify the user
+        \item The notion of a \emph{session} is used to associate state information (stored on the server) to a specific user
+        \item The web application assigns each session a unique \emph{session identifier} (session-ID)
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Session Highjacking}
+    \begin{itemize}
+        \item Session-ID is a number or a combination of numbers and letters that uniquely identifies a session
+        \item Session-ID is assigned to the client (user) upon the first HTTP request to the web application
+        \item Every subsequent request carries the session-ID so that the web application can identify the client (user) and retrieve the corresponding state information stored on the server
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Session Highjacking}
+    \begin{figure}[htb]
+        \centering
+        \includegraphics[scale=.5]{uml/session-hijacking.png}
+    \end{figure}
+    \begin{itemize}
+        \item Because the session-ID must be stored on the client, it can be manipulated or stolen
+        \item An attack exploiting this vulnerability is referred to as \emph{session hijacking}
+        \item \Attacker gets hold of the session-ID information to gain unauthorized access to the web application
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Session Highjacking}
+
+    \begin{center}
+        \begin{verbatim}
+            Name=Alice
+            userID=1234
+            last=2021-08-24
+        \end{verbatim}
+    \end{center}
+
+    \begin{itemize}
+        \item A special case of session hijacking is the so-called \emph{authorization bypass}
+        \item Example: web application identifies the client (user) based on a cookie containing the user name, the user ID and the date of the last session
+        \item Is there are user with ID 1235?
+        \item \Attacker can change \verb|userID| and use the manipulated cookie to take on the identity of another user
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Finding Session Highjacking Vulnerabilities}
+    \begin{itemize}
+        \item First, identify the session-ID in the web application, e.g., search for parameters whose names contain \texttt{ID}, \texttt{TOKEN}, \texttt{SESSIONID}, \texttt{ID} or similar strings. These parameters can be located in hidden input fields, URL parameters or in cookies.
+        \item Once you identified a potential session-ID, change it and check whether you can impersonate another user
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Defending against Session Highjacking}
+    \begin{itemize}
+        \item Session hijacking requires a valid session-ID. \Attacker has essentially 4 options to get hold of it:
+        \begin{itemize}
+            \item Cross-site-scripting (XSS): XSS attacks are commonly used to steal cookies (more on this later). Make sure your web application has no XSS vulnerabilities. In addition, you can set \texttt{HTTPOnly} flag to prevent access to cookies from within JavaScript 
+            \item Eavesdropping network traffic: if \attacker can read network traffic between the client and the web application, she can extract the session-ID. Ensure that you web application uses TLS (HTTPS).
+            \item Searching logfiles: if \attacker has access to the web server (or proxy) logfiles, she can search them for session-IDs that were transmitted via \texttt{GET} requests. Session-ID should therefore be transmitted in cookies or via \texttt{POST} requests.  
+            \item Brute-force attack: \attacker can try to guess the format of your session-IDs and try out various (random) combination until she finds a valid session-ID. You should use large random values as session-IDs.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Defending against Session Highjacking}
+    \begin{itemize}
+        \item Performing session identification based on the combination of the session-ID and the IP address of the client makes session hijacking more difficult
+        \item Instead of the IP address, you can also use e.g., the \texttt{User-Agent} header (i.e., user the client browser "model" as an additional identification factor)
+        \item To reduce session hijacking-related risks, you should end the sessions after a specific time and make the corresponding session-IDs invalid
+        \item This can be done using a "hard" time-out (e.g., every session ends after 30 minutes) or a "soft" time-out (e.g., session ends after 10 minutes of inactivity)
+    \end{itemize}
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Session Fixation %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\begin{frame}
+%    \frametitle{Session Fixation}
+%    \begin{figure}[htb]
+%        \centering
+%        \includegraphics[scale=.5]{uml/session-fixation.png}
+%    \end{figure}
+%    \begin{itemize}
+%        \item Instead of stealing or guessing the session-ID, \attacker attempts to fixate other user's session-ID
+%        \item Session fixation attacks are typically web based and rely on session identifiers being accepted from URL parameters or POST data
+%        \item Example: \attacker sends Alice an email with a link to \texttt{login.php?session=34fgfash6f4fss3}
+%    \end{itemize}
+%\end{frame}
+%
+%\begin{frame}
+%    \frametitle{Detecting Session Fixation Vulnerabilities}
+%    \begin{itemize}
+%        \item Use the information from the recon phase to identify session-IDs
+%        \item Call the web application with a session-ID that is already used, i.e., has been set by the web application
+%        \item Example: if the entry to the web application is \texttt{www.examle.xyz} and the web application, in turn, returns \texttt{www.example.xyz/index.php?session=[valid-session-ID]}, call this URL directly
+%        \item If you can login and your session-ID is \texttt{[valid-session-ID]}, you've found a session fixation vulnerability
+%        \item If session-ID is transmitted in a cookie, use ZAProxy to manipulate it   
+%    \end{itemize}
+%\end{frame}
+%
+%\begin{frame}
+%    \frametitle{Defending against Session Fixation}
+%    \begin{itemize}
+%        \item Make sure your web application generates a new, random session-ID each time a user logs in
+%        \item The same behaviour must be implemented when a new users signs up
+%        \item Some web applications accept arbitrary session-IDs, i.e., session-IDs that they have not generated
+%        \item This makes Eve's life easier because she doesn't need to obtain a valid session-ID
+%        \item Thus, your web application should only accept session-IDs that it actually generated 
+%        \item Make sure it's impossible to reactivate expired sessions with known "old" session-IDs. If a session expired, a new session must be created with a new session-ID and a new state. Otherwise Eve can mount replay attacks.
+%        \item You should also leverage the information in HTTP header's \texttt{Referer} field. If the observed sequence of URLs doesn't match the expected sequence, either URL jumping is taking place or two clients (users) are using the same session-ID
+%    \end{itemize}
+%\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Clickjacking %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\begin{frame}
+%    \frametitle{Clickjacking}
+%    \begin{figure}
+%        \centering
+%        \includegraphics[scale=.3]{img/clickjacking.png}
+%    \end{figure}
+%    \begin{itemize}
+%        \item \eve tricks \alice into clicking on something different from what \alice perceives and, as a result, 
+%        \item This way, \eve can trick \alice into performing undesired actions by clicking on concealed links
+%        \item Clickjacking works because JavaScript allows to load a transparent layer over a web page and have the user's input affect that transparent layer without the user noticing
+%        \item For clickjacking to work, \alice must visit a page under Eve's control (because JavaScript is needed to create the transparent layer)
+%    \end{itemize}
+%    Image source: \href{https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Clickjacking.png/1024px-Clickjacking.png}{Wikimedia}
+%\end{frame}
+%
+%\begin{frame}
+%    \frametitle{Clickjacking}
+%    Example:
+%    \begin{itemize}
+%        \item Alice receives an email with a link to a video about a news item on a page under Eve's control
+%        \item Eve overlays a product page on Amazon on top of the "play" button of the news video
+%        \item Alice clicks on "play" to start the video, but actually buys the product from Amazon
+%        \item Eve can only send a single click, so she relies on the fact that Alice is both logged into Amazon.com and has the 1-click ordering enabled 
+%    \end{itemize}
+%\end{frame}
+%
+%\begin{frame}
+%    \frametitle{Clickjacking}
+%    \begin{itemize}
+%        \item Technically, Eve embeds the target page an an iframe into the web page that will be displayed to Alice
+%        \item Eve reduces the size of the iframe such that only the target link is included; the rest of the target page is beyond the iframe
+%        \item Eve can configure the iframe to follow the mouse pointer. So regardless where Alice clicks, she will always clock on the target link
+%        \item Finally, Eve adjusts the opacity of the \texttt{div} element that spans the iframe such that the iframe becomes invisible to Alice
+%        \item After tricking Alice into clicking the target link, Eve can bring the visible page into the foreground so that Alice will likely not notice the attack
+%    \end{itemize}
+%\end{frame}
+%
+%\begin{frame}
+%    \frametitle{Detecting Clickjacking Vulnerabilities}
+%    \begin{itemize}
+%        \item Check whether your application contains pages where only authenticated users can perform certain actions
+%        \item Then, check whether these pages can be embedded in iframes
+%    \end{itemize}
+%\end{frame}
+%
+%\begin{frame}
+%    \frametitle{Defending against Clickjacking}
+%    \begin{itemize}
+%        \item To defeat clickjacking, you must prevent relevant web pages of your web application from being embedded in an iframe
+%        \item A \emph{framebuster} is a small JS script that prevents the web page from being displayed in a frame (however, HTML5 capabilities -- loading a page in a frame with the \texttt{sandbox} attribute -- allow Eve to bypass any framebusters)
+%        \item \texttt{X-Frame-Option} header can be used (by the web server) to specify preferred framing policy:
+%        \begin{itemize}
+%            \item \texttt{deny} prevents any framing
+%            \item \texttt{sameorigin} prevents framing by external sites
+%            \item \texttt{allow-from origin} allows framing only by the specified site
+%        \end{itemize}
+%        \item The \texttt{frame-ancestors} directive of the Content Security Policy can be used to allow or disallow embedding a web page in an iframe
+%    \end{itemize}
+%\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Cross-Site Request Forgery (CSRF) %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\begin{frame}
+%    \frametitle{Cross-Site Request Forgery}
+%    \begin{itemize}
+%        \item Cross-Site Request Forgery (CSRF) attacks exploit web application's trust in Alice to perform unauthorized actions on her behalf
+%        \item Eve's goal is to trick Alice into unknowingly submitting an HTTP/web request to a web application that Alice has privileged access to (but Eve does not)
+%        \item Unlike Cross-Site Scripting (XSS) which exploits the trust a user has for a particular site, CSRF exploits he trust that a site has in a user's browser
+%        \item 
+%    \end{itemize}
+%\end{frame}
+%
+%\begin{frame}
+%    \frametitle{Cross-Site Request Forgery}
+%    \begin{itemize}
+%        \item At risk are web applications that perform actions based on input from trusted and authenticated users without requiring the user to authorize the specific action
+%        \item For instance, a user who is authenticated by a cookie saved in the user's web browser could unknowingly send an HTTP request to a site that trusts the user and thereby cause an unwanted action
+%    \end{itemize}
+%\end{frame}
+%
+%\begin{frame}[fragile]
+%    \frametitle{Cross-Site Request Forgery}
+%    Example 1:
+%    \begin{itemize}
+%        \item \verb|www.server.xyz/app/index.php?action=logout| is used to log out users
+%        \item The web application identifies users through a session-ID stored in a cookie
+%        \item The cookie is automatically sent by the user's web browser
+%        \item The web application is an online forum where links can be stored in posts
+%        \item Eve publishes a post with the above link disguised by an \verb|<a href="...">more info here</a>|
+%        \item Alice clicks on the link and is logged out
+%    \end{itemize}
+%\end{frame}
+%
+%\begin{frame}[fragile]
+%    \frametitle{Cross-Site Request Forgery}
+%    Example 2:
+%    \begin{itemize}
+%        \item New user is added when \verb|www.server.xyz/app/admin/adduser.php?name=NAME&pass=PWD| is called by an admin
+%        \item The web application identifies users through a session-ID stored in a cookie
+%        \item Eve prepares a malicious web page and tricks the admin to open this page
+%        \item The web page contains \verb|<img src=www.server.xyz/app/admin/adduser.php?name=eve&pass=eve">|
+%        \item The (loged in via cookie) admin opens the malicious page
+%        \item Admin's web browser sends a \verb|GET| request to load the image
+%        \item The URL to create a new user is called instead
+%        \item The cookie to authenticate the admin is automatically sent by her web browser
+%    \end{itemize}
+%\end{frame}
+%
+%\begin{frame}[fragile]
+%    \frametitle{Cross-Site Request Forgery}
+%    Example 3:
+%    \begin{itemize}
+%        \item Instead of a \verb|GET| request, the web application uses a form -- and, thus, a \verb|POST| request -- to add new users:
+%        \begin{verbatim}
+%            <form method="post" action="http://www.server.xyz/app/admin/adduser.php">
+%              Name: <input name="username"> <br>
+%              Passwort: <input name="password"> <br>
+%              <input type=submit value="Add User">
+%            </form>
+%        \end{verbatim}
+%        \item The data sent to the application is in the \verb|POST| request, i.e., it doesn't show in the URL
+%        \item Eve prepares a malicious web page and tricks the admin to open this page
+%        \item The web page contains a form that is auto-submitted upon opening the pages:
+%        \begin{verbatim}
+%            <form name="csrf" method="post" action="http://www.server.xyz/app/admin/adduser.php">
+%              <input type="hidden" name="username" value="eve">
+%              <input type="hidden" name="password" value="eve">
+%            </form>
+%            <script>document.CSRF.submit()</script>
+%        \end{verbatim}
+%        \item The (loged in via cookie) admin opens the malicious page
+%        \item The form is submitted automatically, as if the admin clicked on "Add User"
+%        \item The cookie to authenticate the admin is automatically sent by her web browser
+%    \end{itemize}
+%\end{frame}
+%
+%\begin{frame}[fragile]
+%    \frametitle{Cross-Site Request Forgery}
+%    Example 3 (cont'd):
+%    \begin{itemize}
+%        \item Eve prepares a malicious web page and tricks the admin to open this page
+%        \item The web page contains a form that is auto-submitted upon opening the pages:
+%        \begin{verbatim}
+%            <form name="csrf" method="post" action="http://www.server.xyz/app/admin/adduser.php">
+%              <input type="hidden" name="username" value="eve">
+%              <input type="hidden" name="password" value="eve">
+%            </form>
+%            <script>document.CSRF.submit()</script>
+%        \end{verbatim}
+%        \item The (loged in via cookie) admin opens the malicious page
+%        \item The form is submitted automatically, as if the admin clicked on "Add User"
+%        \item The cookie to authenticate the admin is automatically sent by her web browser
+%    \end{itemize}
+%\end{frame}
+%
+%\begin{frame}
+%    \frametitle{Cross-Site Request Forgery}
+%    \begin{itemize}
+%        \item Essentially, it is sufficient to trick an authorized user to send a maliciously crafted HTTP request
+%        \item As a result, CSRF is not limited to web pages
+%        \item Any document format that supports scripting can be exploited, e.g., HTML e-mails and multimedia files
+%    \end{itemize}
+%\end{frame}
+%
+%\begin{frame}
+%    \frametitle{Detecting CSRF Vulnerabilities}
+%    \begin{itemize}
+%        \item A web application is susceptible to CSRF when it implements actions that can be triggered via a static URL (\texttt{GET} request) or a static \texttt{POST} request (like a static form)
+%        \item To prevent CSRF attacks, the corresponding URLs or forms (\texttt{POST} requests) contain the so-called \emph{Anti-CSRF-Token}
+%        \item The \emph{anti-CSRF-token} is a random value that Eve cannot guess
+%        \item The action associated with the \texttt{GET} or \texttt{POST} request is only performed if the token contains the correct value
+%    \end{itemize}
+%\end{frame}
+%
+%\begin{frame}
+%    \frametitle{Detecting CSRF Vulnerabilities}
+%    \begin{itemize}
+%        \item Thus, you need to check whether all \texttt{GET} and \texttt{POST} requests perform an action that requires authorization contain a CSRF-token  
+%        \item Check whether these requests contain parameters that change every time the request is Sensitive
+%        \item If any of these requests is static, i.e., doesn't change over time, the web application is vulnerable to CSRF
+%    \end{itemize}
+%\end{frame}
+%
+%\begin{frame}
+%    \frametitle{Defending against CSRF}
+%    \begin{itemize}
+%        \item You must add a unique, random token for every relevant \texttt{GET} and \texttt{POST} request
+%        \item It is important that the token has sufficient entropy so that Eve cannot simply send multiple request with highly likely token values
+%        \item The web application must only perform actions when the correct token is supplied
+%        \item Then, Eve cannot prepare a valid request because she can't guess the random token value (she could learn the token value using XSS, though) 
+%        \item For really important actions, you should add an additional password check
+%    \end{itemize}
+%\end{frame}

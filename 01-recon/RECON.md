@@ -150,11 +150,11 @@ aktion            `suchen` (with `nach` & `sprache`)
 aktion            `ausloggen`
 aktion            `plugin2` (with `sprache=de`)
 aktion            `einloggen` (with `benutzer`, `passwort`, `sprache`)
-`aktion`          `upload`
-`aktion`          `loeschen`
-`aktion`          `wirdBenutzer`
-`aktion`          `wirdAutor`
-`aktion`          `sperren`
+aktion            `upload`
+aktion            `loeschen`
+aktion            `wirdBenutzer`
+aktion            `wirdAutor`
+aktion            `sperren`
 benutzer          String, maxlength=100 (with `aktion=einloggen | registrieren`)
 id                Number, 1 - 3 (with `aktion=anzeigen`)
 nach              String, maxlength=250 (with `aktion=suchen`)
